@@ -184,6 +184,9 @@ docker ps                              # Spalte STATUS zeigt "healthy"
 
 ## Deployment auf dem Homeserver
 
+> **Ausführliche Schritt-für-Schritt-Anleitung inklusive Fehlersuche:
+> [`DEPLOYMENT.md`](DEPLOYMENT.md)** — das hier ist die Kurzfassung.
+
 Auf dem Server (`julian@192.168.178.70`):
 
 ```bash
@@ -367,6 +370,7 @@ Cloudflare-Dashboard sinnvoll sein, falls du dort Caching-Regeln aktiviert hast.
 
 ```
 .
+├── DEPLOYMENT.md            Schritt-für-Schritt-Anleitung zum Onlinestellen
 ├── Dockerfile               zweistufiger Build: Node -> nginx:alpine
 ├── docker-compose.yml       Betrieb auf dem Homeserver
 ├── nginx.conf               Auslieferung, Caching, Kompression

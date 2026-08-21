@@ -4,18 +4,38 @@ import { GithubIcon } from './icons'
 import { projects } from '../data/profile'
 import { Section, SectionHeading, Reveal, Chip } from './Primitives'
 
+const STATUS = {
+  live: {
+    label: 'Live',
+    punkt: true,
+    klasse: 'border-beam-400/30 bg-beam-500/10 text-beam-300',
+  },
+  praxis: {
+    label: 'Praxis',
+    punkt: false,
+    klasse: 'border-pulse-400/30 bg-pulse-500/10 text-pulse-300',
+  },
+  eigen: {
+    label: 'Eigenprojekt',
+    punkt: false,
+    klasse: 'border-ink-700 bg-ink-800/60 text-mist-400',
+  },
+  studium: {
+    label: 'Studium',
+    punkt: false,
+    klasse: 'border-ink-700 bg-ink-800/60 text-mist-500',
+  },
+}
+
 function StatusBadge({ status }) {
-  if (status === 'live') {
-    return (
-      <span className="inline-flex items-center gap-1.5 rounded-full border border-beam-400/30 bg-beam-500/10 px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-wider text-beam-300">
-        <span className="size-1.5 rounded-full bg-beam-400" />
-        Live
-      </span>
-    )
-  }
+  const s = STATUS[status] ?? STATUS.studium
+
   return (
-    <span className="inline-flex items-center rounded-full border border-ink-700 bg-ink-800/60 px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-wider text-mist-500">
-      Studium
+    <span
+      className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-wider ${s.klasse}`}
+    >
+      {s.punkt && <span className="size-1.5 rounded-full bg-beam-400" />}
+      {s.label}
     </span>
   )
 }
@@ -93,7 +113,8 @@ function ProjectCard({ project, index }) {
             ))}
           </div>
 
-          {/* Links */}
+          {/* Links — entfällt bei Projekten ohne öffentliches Repository */}
+          {project.links.length > 0 && (
           <div className="mt-6 flex flex-wrap items-center gap-4 border-t border-ink-800 pt-5">
             {primary && (
               <a
@@ -122,13 +143,19 @@ function ProjectCard({ project, index }) {
               </a>
             )}
           </div>
+          )}
         </div>
       </article>
     </Reveal>
   )
 }
 
+const ERSTE_ANZAHL = 6
+
 export default function Projects() {
+  const [alleZeigen, setAlleZeigen] = useState(false)
+  const sichtbar = alleZeigen ? projects : projects.slice(0, ERSTE_ANZAHL)
+
   return (
     <Section id="projekte">
       <SectionHeading
@@ -139,10 +166,28 @@ export default function Projects() {
       />
 
       <div className="grid gap-5 md:grid-cols-2">
-        {projects.map((p, i) => (
+        {sichtbar.map((p, i) => (
           <ProjectCard key={p.id} project={p} index={i} />
         ))}
       </div>
+
+      {!alleZeigen && projects.length > ERSTE_ANZAHL && (
+        <Reveal delay={80}>
+          <div className="mt-8 text-center">
+            <button
+              type="button"
+              onClick={() => setAlleZeigen(true)}
+              className="group inline-flex items-center gap-2 rounded-xl border border-ink-700 bg-ink-850/50 px-6 py-3.5 text-sm font-semibold text-mist-300 backdrop-blur-sm transition-all duration-200 hover:border-ink-600 hover:text-mist-100"
+            >
+              Weitere {projects.length - ERSTE_ANZAHL} Projekte anzeigen
+              <ChevronDown
+                size={16}
+                className="transition-transform duration-200 group-hover:translate-y-0.5"
+              />
+            </button>
+          </div>
+        </Reveal>
+      )}
 
       <Reveal delay={120}>
         <div className="mt-10 text-center">
