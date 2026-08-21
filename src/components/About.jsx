@@ -32,25 +32,6 @@ export default function About() {
         </Reveal>
       </div>
 
-      {/* Persönlicher Abschluss */}
-      <div className="mt-16 border-t border-ink-800 pt-12">
-        <Reveal>
-          <h3 className="mb-8 font-mono text-[11px] uppercase tracking-[0.2em] text-mist-500">
-            {about.interessen.titel}
-          </h3>
-        </Reveal>
-
-        <div className="grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
-          {about.interessen.punkte.map((punkt, i) => (
-            <Reveal key={punkt.titel} delay={i * 70}>
-              <div className="border-l border-ink-700 pl-4">
-                <h4 className="text-[0.9375rem] font-semibold text-mist-100">{punkt.titel}</h4>
-                <p className="mt-2 text-sm leading-relaxed text-mist-400">{punkt.text}</p>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </div>
     </Section>
   )
 }

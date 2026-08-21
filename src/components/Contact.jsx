@@ -1,22 +1,10 @@
-import { ArrowUpRight, Copy, Check } from 'lucide-react'
-import { useState } from 'react'
-import { contact, person, socials } from '../data/profile'
+import { contact, socials } from '../data/profile'
+import MailFreischalten from './MailFreischalten'
 import { SocialIcon } from './icons'
 import { Section, SectionHeading, Reveal } from './Primitives'
 
 export default function Contact() {
-  const [copied, setCopied] = useState(false)
-  const links = socials.filter((s) => s.url && s.id !== 'mail')
-
-  const copyMail = async () => {
-    try {
-      await navigator.clipboard.writeText(person.email)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    } catch {
-      // Zwischenablage nicht verfügbar — der mailto-Link bleibt als Weg bestehen
-    }
-  }
+  const links = socials.filter((s) => s.url)
 
   return (
     <Section id="kontakt">
@@ -51,35 +39,8 @@ export default function Contact() {
               {contact.text}
             </p>
 
-            <div className="mt-9 flex flex-wrap items-center gap-3">
-              <a
-                href={`mailto:${person.email}`}
-                className="group inline-flex items-center gap-2 rounded-xl bg-linear-135 from-beam-400 to-pulse-500 px-6 py-3.5 text-sm font-semibold text-ink-950 shadow-lg shadow-beam-500/20 transition-all duration-200 hover:shadow-xl hover:shadow-beam-500/30 hover:brightness-110"
-              >
-                E-Mail schreiben
-                <ArrowUpRight
-                  size={16}
-                  className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                />
-              </a>
-
-              <button
-                type="button"
-                onClick={copyMail}
-                className="inline-flex items-center gap-2 rounded-xl border border-ink-700 bg-ink-800/50 px-5 py-3.5 font-mono text-xs text-mist-400 transition-all duration-200 hover:border-ink-600 hover:text-mist-100"
-              >
-                {copied ? (
-                  <>
-                    <Check size={14} className="text-beam-400" />
-                    kopiert
-                  </>
-                ) : (
-                  <>
-                    <Copy size={14} />
-                    {person.email}
-                  </>
-                )}
-              </button>
+            <div className="mt-9">
+              <MailFreischalten />
             </div>
 
             {links.length > 0 && (

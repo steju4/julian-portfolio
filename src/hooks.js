@@ -85,10 +85,11 @@ export function useScrolled(threshold = 24) {
  * Zahlen aktuell, ohne das Anfragekontingent der GitHub-API zu verbrauchen.
  */
 export function useGithub() {
-  const [zustand, setZustand] = useState(() => {
-    const bekannt = letzterStand()
-    return { status: bekannt ? 'bereit' : 'laden', daten: bekannt, fehler: null }
-  })
+  // Bewusst immer im Zustand "laden" starten. Der erste Rendervorgang muss auf
+  // dem Server (Prerendering) und im Browser identisch ausfallen, sonst passt
+  // die Hydration nicht zusammen. Der zwischengespeicherte Stand wird deshalb
+  // erst im Effekt gelesen — dort, wo es localStorage auch wirklich gibt.
+  const [zustand, setZustand] = useState({ status: 'laden', daten: null, fehler: null })
 
   const laden = useCallback(async (erzwingen = false) => {
     setZustand((z) => ({ ...z, status: z.daten ? 'aktualisiert' : 'laden' }))
@@ -106,6 +107,11 @@ export function useGithub() {
   }, [])
 
   useEffect(() => {
+    // Zuerst den zuletzt bekannten Stand zeigen, damit die Zahlen sofort da
+    // sind, dann im Hintergrund aktualisieren.
+    const bekannt = letzterStand()
+    if (bekannt) setZustand({ status: 'bereit', daten: bekannt, fehler: null })
+
     laden()
 
     const intervall = setInterval(() => {

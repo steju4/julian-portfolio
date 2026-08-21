@@ -1,12 +1,16 @@
 import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import { hydrateRoot } from 'react-dom/client'
 import App from './App.jsx'
 // Schriften lokal gebündelt – keine Requests an Drittanbieter (DSGVO)
 import '@fontsource-variable/inter'
 import '@fontsource-variable/jetbrains-mono'
 import './index.css'
 
-createRoot(document.getElementById('root')).render(
+// Die Seite wird beim Bauen bereits zu HTML gerendert (siehe
+// scripts/prerender.mjs). Der Browser übernimmt dieses HTML und hängt sich
+// nur noch daran — statt alles zu verwerfen und neu aufzubauen.
+hydrateRoot(
+  document.getElementById('root'),
   <StrictMode>
     <App />
   </StrictMode>,

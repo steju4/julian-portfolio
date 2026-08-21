@@ -4,16 +4,16 @@
       <stop offset="0%" stop-color="#67e8f9"/>
       <stop offset="100%" stop-color="#c4b5fd"/>
     </linearGradient>
-    <radialGradient id="glowA" cx="15%" cy="10%" r="55%">
-      <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.34"/>
+    <radialGradient id="glowA" cx="12%" cy="8%" r="55%">
+      <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.30"/>
       <stop offset="100%" stop-color="#06b6d4" stop-opacity="0"/>
     </radialGradient>
-    <radialGradient id="glowB" cx="88%" cy="78%" r="55%">
-      <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.32"/>
+    <radialGradient id="glowB" cx="90%" cy="85%" r="50%">
+      <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.28"/>
       <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/>
     </radialGradient>
     <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
-      <path d="M60 0H0V60" fill="none" stroke="#2c3444" stroke-opacity="0.4" stroke-width="1"/>
+      <path d="M60 0H0V60" fill="none" stroke="#2c3444" stroke-opacity="0.35" stroke-width="1"/>
     </pattern>
   </defs>
 
@@ -22,28 +22,35 @@
   <rect width="1200" height="630" fill="url(#glowA)"/>
   <rect width="1200" height="630" fill="url(#glowB)"/>
 
-  <g font-family="Inter, ui-sans-serif, system-ui, sans-serif">
-    <text x="90" y="222" font-size="26" font-weight="500" fill="#6f7a92"
-          letter-spacing="6" font-family="ui-monospace, monospace">JULIAN.STENGELE-HOME.DE</text>
+  <!-- Monogramm rechts, mit klarem Abstand zum Text -->
+  <g transform="translate(1012, 315)">
+    <circle r="104" fill="none" stroke="url(#accent)" stroke-width="2"
+            stroke-dasharray="10 8" opacity="0.7"/>
+    <circle r="84" fill="#0e121b" stroke="#1e2432" stroke-width="1.5"/>
+    <text y="24" font-size="62" font-weight="700" fill="url(#accent)" text-anchor="middle"
+          font-family="ui-monospace, 'JetBrains Mono', 'DejaVu Sans Mono', monospace"
+          letter-spacing="-1">JS</text>
+  </g>
 
-    <text x="90" y="330" font-size="84" font-weight="800" fill="#eef1f7" letter-spacing="-2.5">Julian Stengele</text>
+  <g font-family="Inter, 'DejaVu Sans', ui-sans-serif, system-ui, sans-serif">
+    <text x="88" y="214" font-size="23" font-weight="500" fill="#6f7a92"
+          letter-spacing="6.5"
+          font-family="ui-monospace, 'DejaVu Sans Mono', monospace">JULIAN.STENGELE-HOME.DE</text>
 
-    <text x="90" y="404" font-size="36" font-weight="600" fill="url(#accent)" letter-spacing="-0.6">
-      Dualer Informatik-Student · Schwerpunkt KI
+    <text x="88" y="316" font-size="78" font-weight="800" fill="#eef1f7"
+          letter-spacing="-2.2">Julian Stengele</text>
+
+    <text x="88" y="386" font-size="35" font-weight="600" fill="url(#accent)"
+          letter-spacing="-0.5">Dualer Informatik-Student</text>
+
+    <text x="88" y="446" font-size="26" font-weight="400" fill="#9aa4bb">
+      Schwerpunkt Künstliche Intelligenz
     </text>
 
-    <text x="90" y="472" font-size="27" font-weight="400" fill="#9aa4bb">
+    <text x="88" y="492" font-size="22" font-weight="400" fill="#6f7a92">
       DHBW Friedrichshafen · Kurs TIK24
     </text>
   </g>
 
-  <g transform="translate(950, 300)">
-    <circle r="112" fill="none" stroke="url(#accent)" stroke-width="2"
-            stroke-dasharray="10 8" opacity="0.75"/>
-    <circle r="92" fill="#0e121b" stroke="#1e2432" stroke-width="1.5"/>
-    <text y="26" font-size="70" font-weight="700" fill="url(#accent)" text-anchor="middle"
-          font-family="ui-monospace, 'JetBrains Mono', monospace" letter-spacing="-2">JS</text>
-  </g>
-
-  <rect x="0" y="618" width="1200" height="12" fill="url(#accent)"/>
+  <rect x="0" y="620" width="1200" height="10" fill="url(#accent)"/>
 </svg>

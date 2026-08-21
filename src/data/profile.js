@@ -12,7 +12,6 @@ export const person = {
   tagline:
     'Zwischen Softwareentwicklung und Künstlicher Intelligenz — ich baue Dinge, die Menschen wirklich weiterbringen.',
   location: 'Friedrichshafen / Meßkirch, Deutschland',
-  email: 'julian.stengele@gmail.com',
   course: 'TIK24',
   university: 'DHBW Friedrichshafen',
   focus: 'Künstliche Intelligenz',
@@ -43,12 +42,6 @@ export const socials = [
     handle: '@jsteng05',
     url: 'https://www.instagram.com/jsteng05/',
   },
-  {
-    id: 'mail',
-    label: 'E-Mail',
-    handle: 'julian.stengele@gmail.com',
-    url: 'mailto:julian.stengele@gmail.com',
-  },
 ]
 
 export const about = {
@@ -65,11 +58,10 @@ export const about = {
      Problem eine saubere, benutzbare Lösung zu machen, finde ich deutlich spannender als
      Technik um ihrer selbst willen.`,
 
-    `Auf der KI-Seite reizt mich vor allem, hinter die Abstraktion zu schauen. Im Praxisprojekt
-     Lernverfahren habe ich ein Convolutional Neural Network nicht nur mit Keras trainiert,
-     sondern zusätzlich komplett in NumPy nachgebaut — inklusive eigener Backpropagation. Erst
-     wenn ich weiß, was ein Framework mir abnimmt, kann ich einschätzen, wann ich ihm trauen
-     darf.`,
+    `Auf der KI-Seite reizt mich vor allem, hinter die Abstraktion zu schauen. Ein neuronales
+     Netz mit einem Framework zu trainieren ist die eine Sache — es einmal von Hand
+     nachzubauen, inklusive eigener Backpropagation, eine ganz andere. Erst wenn ich weiß, was
+     ein Framework mir abnimmt, kann ich einschätzen, wann ich ihm trauen darf.`,
 
     `Parallel dazu läuft bei mir zu Hause ein kleiner Server, auf dem ich betreibe, was ich
      baue — von Passwortmanager über Monitoring bis zu dieser Seite hier. Genau dieser Teil,
@@ -77,28 +69,6 @@ export const about = {
      möchte.`,
   ],
 
-  // Kurzer, persönlicher Block unter den Absätzen
-  interessen: {
-    titel: 'Abseits vom Code',
-    punkte: [
-      {
-        titel: 'Wetterbeobachtung',
-        text: 'Ich vergleiche täglich mehrere Wettermodelle — ECMWF, GFS, ICON und KNMI — und schaue mir an, wo sie auseinanderlaufen und warum.',
-      },
-      {
-        titel: 'Tenorhorn & Vorstand',
-        text: 'Ich spiele in der Musikkapelle Menningen und bin dort Beisitzer im Vorstand. Aktuell organisieren wir das Schuppenfest mit.',
-      },
-      {
-        titel: 'Gravel statt Motor',
-        text: 'Nach längerer E-Bike-Phase gerade bewusst zurück aufs Gravelbike — inklusive Auswertung der eigenen Trainingsdaten.',
-      },
-      {
-        titel: 'Elektronik aufbereiten',
-        text: 'Gebrauchte Technik günstig kaufen, instand setzen und weitergeben. Gutes Training im Umgang mit fremder Hardware.',
-      },
-    ],
-  },
 }
 
 export const facts = [
@@ -200,23 +170,6 @@ export const projects = [
     ],
     tech: ['ESP32', 'C++', 'PlatformIO', 'LCD1602'],
     links: [],
-  },
-  {
-    id: 'lernverfahren',
-    title: 'Praxisprojekt Lernverfahren',
-    kind: 'Machine Learning',
-    status: 'studium',
-    year: '2026',
-    summary:
-      'Praxisprojekt zur Vorlesung „Grundlagen maschineller Lernverfahren“ — Bilderkennung auf CIFAR-10 aus drei bewusst unterschiedlichen Blickwinkeln.',
-    details: [
-      'Ein Convolutional Neural Network mit Keras trainiert, um Autos von Nicht-Autos zu unterscheiden.',
-      'Dasselbe CNN anschließend vollständig in NumPy nachgebaut — inklusive selbst geschriebener Backpropagation, ohne Framework.',
-      'Zum Vergleich MobileNetV2 als vortrainiertes Modell geladen und per Fine-Tuning auf die Aufgabe angepasst.',
-      'Fünfköpfiges Team aus dem Kurs TIK24, Training auf GPU-Laufzeiten.',
-    ],
-    tech: ['Python', 'TensorFlow / Keras', 'NumPy', 'Jupyter', 'CIFAR-10'],
-    links: [{ label: 'Quellcode', url: 'https://github.com/steju4/lernverfahren', primary: true }],
   },
   {
     id: 'feels-like',
@@ -356,7 +309,7 @@ export const timeline = [
     period: 'seit 2024',
     title: 'Duales Studium Informatik',
     org: 'DHBW Friedrichshafen — Kurs TIK24',
-    text: 'Studium im dreimonatigen Wechsel zwischen Theorie- und Praxisphasen, mit Schwerpunkt auf Künstlicher Intelligenz. Inhalte von Programmierung in C und Java über Software Engineering und Datenbanken bis zu maschinellen Lernverfahren. Abschluss vorgesehen für 2027.',
+    text: 'Studium im dreimonatigen Wechsel zwischen Theorie- und Praxisphasen, mit Schwerpunkt auf Künstlicher Intelligenz. Inhalte von Programmierung in C und Java über Software Engineering und Datenbanken bis zu maschinellem Lernen. Abschluss vorgesehen für 2027.',
     current: true,
   },
   {
@@ -383,5 +336,5 @@ export const contact = {
   headline: 'Lass uns reden',
   text: `Ob eine Idee für ein gemeinsames Projekt, eine Vereinswebseite oder einfach eine Frage
          zu einem meiner Projekte — ich freue mich über Nachrichten. Am schnellsten erreichst du
-         mich per E-Mail.`,
+         mich per E-Mail; die Adresse gebe ich nach einer kurzen Sicherheitsabfrage frei.`,
 }

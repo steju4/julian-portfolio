@@ -14,14 +14,15 @@ auf dem eigenen Homeserver.
 1. [Tech-Stack](#tech-stack)
 2. [Lokal entwickeln](#lokal-entwickeln)
 3. [Inhalte pflegen](#inhalte-pflegen)
-4. [Live-Daten von GitHub](#live-daten-von-github)
-5. [Mit Docker bauen und starten](#mit-docker-bauen-und-starten)
-6. [Deployment auf dem Homeserver](#deployment-auf-dem-homeserver)
-7. [Nginx Proxy Manager einrichten](#nginx-proxy-manager-einrichten)
-8. [Cloudflare Tunnel einrichten](#cloudflare-tunnel-einrichten)
-9. [Aktualisieren](#aktualisieren)
-10. [Projektstruktur](#projektstruktur)
-11. [Entscheidungen im Detail](#entscheidungen-im-detail)
+4. [Suchmaschinen und KI-Crawler](#suchmaschinen-und-ki-crawler)
+5. [Live-Daten von GitHub](#live-daten-von-github)
+6. [Mit Docker bauen und starten](#mit-docker-bauen-und-starten)
+7. [Deployment auf dem Homeserver](#deployment-auf-dem-homeserver)
+8. [Nginx Proxy Manager einrichten](#nginx-proxy-manager-einrichten)
+9. [Cloudflare Tunnel einrichten](#cloudflare-tunnel-einrichten)
+10. [Aktualisieren](#aktualisieren)
+11. [Projektstruktur](#projektstruktur)
+12. [Entscheidungen im Detail](#entscheidungen-im-detail)
 
 ---
 
@@ -106,6 +107,90 @@ türkise Live-Abzeichen, jeder andere Wert das graue „Studium"-Abzeichen.
 ```
 
 ---
+
+## Suchmaschinen und KI-Crawler
+
+Eine React-Anwendung liefert normalerweise ein leeres HTML-Dokument aus und
+baut den Inhalt erst im Browser auf. Google kommt damit zurecht, weil es
+JavaScript ausführt — **die meisten KI-Crawler tun das nicht**. GPTBot,
+ClaudeBot, PerplexityBot und Konsorten lesen das rohe HTML. Sie hätten hier
+eine vollständig leere Seite gesehen.
+
+Deshalb wird die Seite **beim Bauen einmal zu fertigem HTML gerendert**:
+
+```
+npm run build
+  ├─ vite build                          Client-Bundle
+  ├─ vite build --ssr src/entry-server.jsx   dieselbe App für Node
+  └─ node scripts/prerender.mjs          rendert zu HTML, schreibt es in dist/index.html
+```
+
+Das Ergebnis: rund **8.800 Zeichen Text und 22 Überschriften** stehen direkt
+im ausgelieferten Dokument. Im Browser übernimmt React dieses HTML per
+`hydrateRoot`, statt alles zu verwerfen.
+
+Prüfen lässt sich das ohne Browser:
+
+```bash
+curl -s https://julian.stengele-home.de | grep -c "<h2"
+# erwartet: eine Zahl > 0, nicht 0
+```
+
+### Damit die Hydration zusammenpasst
+
+Der erste Rendervorgang muss auf dem Server und im Browser **identisch**
+ausfallen. Deshalb startet `useGithub` immer im Zustand „laden" und liest den
+zwischengespeicherten Stand erst im Effekt — auf dem Server gibt es
+`localStorage` schließlich gar nicht. Wird das geändert, meldet React
+Hydration-Fehler in der Konsole.
+
+### Weiteres
+
+- **Strukturierte Daten** (`schema.org/Person` und `WebSite`) als JSON-LD im
+  `<head>`, damit Suchmaschinen und KI-Crawler die Seite einordnen können,
+  ohne den Fließtext interpretieren zu müssen.
+- **`robots.txt`** listet die Crawler ausdrücklich auf — getrennt nach
+  Suchmaschinen, KI-Suche und solchen, die auch für das Training sammeln.
+  Wer Letzteres nicht will, ersetzt dort `Allow: /` durch `Disallow: /`.
+- **Vorschaubild als PNG** (`og-image.png`, 1200 × 630). Bewusst nicht als
+  SVG: Google, LinkedIn und WhatsApp zeigen SVG-Vorschaubilder nicht an.
+- **`<noscript>`-Regel**, die die Einblend-Animation abschaltet — sonst wäre
+  der vorgerenderte Inhalt ohne JavaScript zwar vorhanden, aber unsichtbar.
+
+---
+
+## Die E-Mail-Adresse
+
+Die Adresse steht **nirgends im Quelltext** — weder im HTML noch im gebauten
+JavaScript. In [`src/mail.js`](src/mail.js) liegt sie verfremdet; zusammen-
+gesetzt wird sie erst, wenn jemand im Kontaktbereich eine kurze Rechenaufgabe
+gelöst hat.
+
+Ein Adresssammler, der den Quelltext nach dem Muster `name@domain.tld`
+durchsucht, findet hier nichts:
+
+```bash
+grep -rE "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}" dist/
+# erwartet: keine Ausgabe
+```
+
+**Ehrliche Einordnung:** Das ist kein kryptografischer Schutz. Wer einen
+echten Browser automatisiert und die Aufgabe löst, kommt an die Adresse.
+Gegen die übliche Sorte Massensammler, die nur HTML nach Mustern absucht,
+wirkt es zuverlässig — und anders als ein eingebundenes Captcha eines
+Drittanbieters kostet es weder eine Ausnahme in der Content-Security-Policy
+noch Daten der Besucher.
+
+Die Aufgabe ist als Text formuliert statt als Bild, damit sie mit Tastatur
+und Screenreader bedienbar bleibt. Bei einer falschen Antwort erscheint eine
+neue Aufgabe.
+
+**Adresse ändern:** Die verfremdete Zeichenkette in `src/mail.js` neu
+erzeugen —
+
+```bash
+node -e "const m='neue@adresse.de';console.log(Buffer.from([...m].map(c=>c.charCodeAt(0)^0x5c)).toString('base64'))"
+```
 
 ## Live-Daten von GitHub
 
@@ -375,14 +460,19 @@ Cloudflare-Dashboard sinnvoll sein, falls du dort Caching-Regeln aktiviert hast.
 ├── docker-compose.yml       Betrieb auf dem Homeserver
 ├── nginx.conf               Auslieferung, Caching, Kompression
 ├── security-headers.conf    Sicherheits-Header (bewusst separat, siehe unten)
-├── index.html               HTML-Grundgerüst inkl. Meta-Angaben
+├── index.html               HTML-Grundgerüst, Meta-Angaben, JSON-LD
+├── scripts/
+│   └── prerender.mjs        rendert die Seite beim Bauen zu HTML
 ├── public/
 │   ├── favicon.svg          Monogramm als Favicon
-│   ├── og-image.svg         Vorschaubild für Link-Vorschauen
+│   ├── og-image.png         Vorschaubild für Link-Vorschauen (1200x630)
+│   ├── og-image.svg         Quelle des Vorschaubilds
 │   ├── robots.txt
 │   └── sitemap.xml
 └── src/
-    ├── main.jsx             Einstiegspunkt, bindet die Schriften ein
+    ├── main.jsx             Einstiegspunkt im Browser (hydrateRoot)
+    ├── entry-server.jsx     Einstiegspunkt für das Prerendering
+    ├── mail.js              verfremdete Adresse und Sicherheitsabfrage
     ├── App.jsx              Reihenfolge der Abschnitte
     ├── index.css            Design-Tokens, Basisstile, Animationen
     ├── hooks.js             Einblenden beim Scrollen, aktiver Abschnitt, GitHub-Daten
@@ -401,6 +491,7 @@ Cloudflare-Dashboard sinnvoll sein, falls du dort Caching-Regeln aktiviert hast.
         ├── Skills.jsx       Technologie-Gruppen
         ├── Timeline.jsx     Werdegang
         ├── Contact.jsx      Kontaktbereich
+        ├── MailFreischalten.jsx  gibt die Adresse nach der Abfrage frei
         ├── Footer.jsx
         ├── Primitives.jsx   wiederverwendete Bausteine
         └── icons.jsx        Icons inkl. eigener Marken-SVGs
