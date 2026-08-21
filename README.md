@@ -136,6 +136,27 @@ curl -s https://julian.stengele-home.de | grep -c "<h2"
 # erwartet: eine Zahl > 0, nicht 0
 ```
 
+
+### Mehr als eine Seite
+
+Neben der Startseite entstehen beim Bauen zwei weitere Dokumente:
+
+| Adresse | Datei | Zweck |
+| --- | --- | --- |
+| `/` | `dist/index.html` | Startseite |
+| `/datenschutz/` | `dist/datenschutz/index.html` | Datenschutzhinweis |
+| beliebig unbekannt | `dist/404.html` | Fehlerseite, ausgeliefert mit echtem Status 404 |
+
+Welche Seite gemeint ist, steht als Attribut im HTML
+(`<div id="root" data-seite="…">`) — bewusst nicht in `window.location`. Die
+Fehlerseite wird unter beliebigen Adressen ausgeliefert; aus dem Pfad allein
+ließe sie sich nicht erkennen, Server und Browser kämen zu unterschiedlichen
+Ergebnissen und die Hydration bräche.
+
+Unbekannte Adressen landen **nicht** auf der Startseite, sondern liefern einen
+echten 404. Sonst würde jede Falschschreibung als gültige Seite gelten und im
+Suchindex Dubletten erzeugen.
+
 ### Damit die Hydration zusammenpasst
 
 Der erste Rendervorgang muss auf dem Server und im Browser **identisch**
@@ -156,6 +177,23 @@ Hydration-Fehler in der Konsole.
   SVG: Google, LinkedIn und WhatsApp zeigen SVG-Vorschaubilder nicht an.
 - **`<noscript>`-Regel**, die die Einblend-Animation abschaltet — sonst wäre
   der vorgerenderte Inhalt ohne JavaScript zwar vorhanden, aber unsichtbar.
+
+---
+
+## Datenschutzhinweis
+
+Der Text unter [`src/pages/Datenschutz.jsx`](src/pages/Datenschutz.jsx)
+beschreibt genau das, was die Seite technisch tut: Server-Protokolle,
+Auslieferung über Cloudflare, die GitHub-Abfrage aus dem Browser der Besucher
+und den Zwischenspeicher im Browser.
+
+> **Wichtig beim Weiterbauen:** Kommt eine Besucherstatistik, eine Schriftart
+> von einem fremden Server oder eine weitere externe Schnittstelle dazu, muss
+> dieser Text mitgeführt werden. Er ist kein Ersatz für eine Rechtsberatung.
+
+Ein Impressum ist bewusst nicht enthalten. Ob eines nötig ist, hängt davon ab,
+ob die Seite als rein privat gilt — das ist eine Einschätzung, die nur der
+Betreiber treffen kann.
 
 ---
 
@@ -473,7 +511,12 @@ Cloudflare-Dashboard sinnvoll sein, falls du dort Caching-Regeln aktiviert hast.
     ├── main.jsx             Einstiegspunkt im Browser (hydrateRoot)
     ├── entry-server.jsx     Einstiegspunkt für das Prerendering
     ├── mail.js              verfremdete Adresse und Sicherheitsabfrage
-    ├── App.jsx              Reihenfolge der Abschnitte
+    ├── App.jsx              Verteiler auf Startseite, Datenschutz und 404
+    ├── pages/
+    │   ├── Datenschutz.jsx  Datenschutzhinweis
+    │   ├── NichtGefunden.jsx  Fehlerseite
+    │   ├── Unterseite.jsx   Gerüst für Unterseiten
+    │   └── Textbausteine.jsx
     ├── index.css            Design-Tokens, Basisstile, Animationen
     ├── hooks.js             Einblenden beim Scrollen, aktiver Abschnitt, GitHub-Daten
     ├── github.js            Abruf, Zwischenspeicher und Aufbereitung der GitHub-Daten

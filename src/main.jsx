@@ -9,9 +9,11 @@ import './index.css'
 // Die Seite wird beim Bauen bereits zu HTML gerendert (siehe
 // scripts/prerender.mjs). Der Browser übernimmt dieses HTML und hängt sich
 // nur noch daran — statt alles zu verwerfen und neu aufzubauen.
+const wurzel = document.getElementById('root')
+
 hydrateRoot(
-  document.getElementById('root'),
+  wurzel,
   <StrictMode>
-    <App />
+    <App seite={wurzel.dataset.seite || 'start'} />
   </StrictMode>,
 )
