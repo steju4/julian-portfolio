@@ -16,9 +16,6 @@ export const person = {
   course: 'TIK24',
   university: 'DHBW Friedrichshafen',
   focus: 'Künstliche Intelligenz',
-  partner: 'Geberit',
-  partnerOrt: 'Pfullendorf',
-  abteilung: 'Web Applications',
 }
 
 // ---------------------------------------------------------------------------
@@ -58,10 +55,9 @@ export const about = {
   headline: 'Zwischen Vorlesung, Praxisphase und dem Serverschrank zu Hause',
   paragraphs: [
     `Ich studiere Informatik im dualen Modell an der DHBW Friedrichshafen — Kurs TIK24, mit
-     Schwerpunkt auf Künstlicher Intelligenz. Meine Praxisphasen verbringe ich bei Geberit in
-     Pfullendorf in der Abteilung Web Applications. Das duale Prinzip heißt für mich: Was in
-     der Theoriephase an der Tafel steht, muss drei Monate später im Betrieb tatsächlich
-     funktionieren. Diese Rückkopplung prägt, wie ich Software baue.`,
+     Schwerpunkt auf Künstlicher Intelligenz. Das duale Prinzip heißt für mich: Was in der
+     Theoriephase an der Tafel steht, muss in der Praxisphase tatsächlich funktionieren.
+     Diese Rückkopplung prägt, wie ich Software baue.`,
 
     `Am liebsten arbeite ich an Projekten, die einen echten Adressaten haben. Die Webseite der
      Fuchszunft Menningen wird von einem ganzen Verein genutzt, BetterDualis ist aus dem
@@ -71,9 +67,9 @@ export const about = {
 
     `Auf der KI-Seite reizt mich vor allem, hinter die Abstraktion zu schauen. Im Praxisprojekt
      Lernverfahren habe ich ein Convolutional Neural Network nicht nur mit Keras trainiert,
-     sondern zusätzlich komplett in NumPy nachgebaut — inklusive eigener Backpropagation. In
-     meiner Projektarbeit ging es dann um die andere Richtung: nicht das Modell selbst, sondern
-     die Frage, wie KI-Werkzeuge einen Entwicklungsprozess wirklich verändern.`,
+     sondern zusätzlich komplett in NumPy nachgebaut — inklusive eigener Backpropagation. Erst
+     wenn ich weiß, was ein Framework mir abnimmt, kann ich einschätzen, wann ich ihm trauen
+     darf.`,
 
     `Parallel dazu läuft bei mir zu Hause ein kleiner Server, auf dem ich betreibe, was ich
      baue — von Passwortmanager über Monitoring bis zu dieser Seite hier. Genau dieser Teil,
@@ -191,23 +187,6 @@ export const projects = [
     ],
   },
   {
-    id: 'projektarbeit-ki',
-    title: 'KI-gestützte Frontend-Entwicklung',
-    kind: 'Projektarbeit im Studium',
-    status: 'praxis',
-    year: '2026',
-    summary:
-      'Studienarbeit zu der Frage, wie KI-Assistenten einen Entwicklungsprozess tatsächlich verändern — untersucht am Beispiel einer CMS-Migration im Praxisbetrieb.',
-    details: [
-      'Kern der Arbeit ist ein mehrstufiger Agenten-Workflow in der Entwicklungsumgebung: ein Orchestrator, der die Aufgabe zerlegt, und fünf Fach-Agenten mit jeweils eigenen Instruktionen und Prompt-Bausteinen.',
-      'Erprobt wurde der Workflow nicht an Spielbeispielen, sondern an zwei realen Oberflächenkomponenten aus einer laufenden Migration.',
-      'Dazu eine dokumentierte Auswertung nach selbst aufgestellten Qualitätskriterien — mit Stärken, Schwächen, Grenzen und der Frage, was sich davon auf andere Projekte übertragen lässt.',
-      'Umfang rund 80 Seiten.',
-    ],
-    tech: ['GitHub Copilot', 'Agenten-Workflows', 'Prompt Engineering', 'VS Code', 'Magnolia CMS'],
-    links: [],
-  },
-  {
     id: 'esp32-display',
     title: 'Server-Status-Display',
     kind: 'Embedded / IoT',
@@ -270,22 +249,6 @@ export const projects = [
     ],
     tech: ['TypeScript', 'Ionic', 'Java 21', 'Spring Boot', 'Gradle'],
     links: [{ label: 'Quellcode', url: 'https://github.com/steju4/PlantApp', primary: true }],
-  },
-  {
-    id: 'work-at-sig',
-    title: 'Praktikumsaufgaben für Schüler:innen',
-    kind: 'Didaktik & Python',
-    status: 'praxis',
-    year: '2025',
-    summary:
-      'Für Schulpraktikant:innen zwischen 14 und 17 Jahren konzipierte Aufgaben, die einen ersten echten Kontakt mit Programmierung und Hardware herstellen.',
-    details: [
-      'Eine elfteilige Python-Serie am Raspberry Pi, die Schritt für Schritt zur Ansteuerung eines LCD-Displays führt — jede Datei ein kleiner, abgeschlossener Lernschritt.',
-      'Ergänzend ein Memory-Spiel zum Auseinandernehmen eines Laptops: Karten, auf denen Bauteile ihrer Funktion zugeordnet werden.',
-      'Die eigentliche Herausforderung war weniger der Code als die Frage, wie viel Erklärung nötig ist, damit jemand ohne Vorwissen selbst weiterkommt.',
-    ],
-    tech: ['Python', 'Raspberry Pi', 'Didaktik'],
-    links: [],
   },
   {
     id: 'morse',
@@ -366,7 +329,6 @@ export const skillGroups = [
       'Jupyter',
       'CNNs',
       'Transfer Learning',
-      'KI-Entwicklungsworkflows',
     ],
   },
   {
@@ -395,13 +357,6 @@ export const timeline = [
     title: 'Duales Studium Informatik',
     org: 'DHBW Friedrichshafen — Kurs TIK24',
     text: 'Studium im dreimonatigen Wechsel zwischen Theorie- und Praxisphasen, mit Schwerpunkt auf Künstlicher Intelligenz. Inhalte von Programmierung in C und Java über Software Engineering und Datenbanken bis zu maschinellen Lernverfahren. Abschluss vorgesehen für 2027.',
-    current: true,
-  },
-  {
-    period: 'seit 2024',
-    title: 'Praxisphasen als dualer Student',
-    org: 'Geberit, Pfullendorf — Abteilung Web Applications',
-    text: 'Mitarbeit an der Webplattform des Unternehmens, unter anderem im Umfeld einer CMS-Migration. Daraus ist auch meine Projektarbeit zu KI-gestützten Entwicklungsworkflows entstanden.',
     current: true,
   },
   {
