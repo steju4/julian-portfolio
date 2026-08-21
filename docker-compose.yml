@@ -1,0 +1,43 @@
+services:
+  portfolio:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: julian-portfolio:latest
+    container_name: julian-portfolio
+    restart: unless-stopped
+
+    # Der Nginx Proxy Manager erreicht den Container hierüber.
+    #
+    #  Variante A (Standard, unten aktiv):
+    #     Port auf dem Host veröffentlichen. Im NPM als Ziel dann
+    #     die Server-IP und Port 8080 eintragen.
+    #
+    #  Variante B (sauberer, siehe unten auskommentiert):
+    #     Gemeinsames Docker-Netz mit dem NPM. Im NPM als Ziel dann
+    #     den Containernamen "julian-portfolio" und Port 80 eintragen.
+    #     Dafür die Zeilen unter "ports" entfernen und den
+    #     "networks"-Block aktivieren.
+    ports:
+      - '8080:80'
+
+    # networks:
+    #   - proxy
+
+    healthcheck:
+      test: ['CMD', 'wget', '--quiet', '--tries=1', '--spider', 'http://127.0.0.1/healthz']
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+
+    logging:
+      driver: json-file
+      options:
+        max-size: '10m'
+        max-file: '3'
+
+# networks:
+#   proxy:
+#     external: true
+#     name: <Name des NPM-Netzes>
