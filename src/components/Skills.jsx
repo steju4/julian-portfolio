@@ -6,7 +6,7 @@ export default function Skills() {
   return (
     <Section id="stack">
       <SectionHeading
-        index="03"
+        index="04"
         kicker="Stack"
         title="Womit ich arbeite"
         lead="Technologien, die ich in Studium, Praxisphasen und eigenen Projekten tatsächlich eingesetzt habe — nicht nur einmal ausprobiert."

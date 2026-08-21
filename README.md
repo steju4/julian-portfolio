@@ -14,13 +14,14 @@ auf dem eigenen Homeserver.
 1. [Tech-Stack](#tech-stack)
 2. [Lokal entwickeln](#lokal-entwickeln)
 3. [Inhalte pflegen](#inhalte-pflegen)
-4. [Mit Docker bauen und starten](#mit-docker-bauen-und-starten)
-5. [Deployment auf dem Homeserver](#deployment-auf-dem-homeserver)
-6. [Nginx Proxy Manager einrichten](#nginx-proxy-manager-einrichten)
-7. [Cloudflare Tunnel einrichten](#cloudflare-tunnel-einrichten)
-8. [Aktualisieren](#aktualisieren)
-9. [Projektstruktur](#projektstruktur)
-10. [Entscheidungen im Detail](#entscheidungen-im-detail)
+4. [Live-Daten von GitHub](#live-daten-von-github)
+5. [Mit Docker bauen und starten](#mit-docker-bauen-und-starten)
+6. [Deployment auf dem Homeserver](#deployment-auf-dem-homeserver)
+7. [Nginx Proxy Manager einrichten](#nginx-proxy-manager-einrichten)
+8. [Cloudflare Tunnel einrichten](#cloudflare-tunnel-einrichten)
+9. [Aktualisieren](#aktualisieren)
+10. [Projektstruktur](#projektstruktur)
+11. [Entscheidungen im Detail](#entscheidungen-im-detail)
 
 ---
 
@@ -105,6 +106,52 @@ türkise Live-Abzeichen, jeder andere Wert das graue „Studium"-Abzeichen.
 ```
 
 ---
+
+## Live-Daten von GitHub
+
+Der Abschnitt „GitHub" auf der Seite zeigt echte Zahlen, keine gepflegte
+Liste: öffentliche Repositories, Sterne, Forks, Follower, die Verteilung der
+Sprachen, die zuletzt bearbeiteten Repositories und die letzte öffentliche
+Aktivität. Auch der Hinweis oben im Einstiegsbereich („Zuletzt aktiv auf
+GitHub · vor …") stammt aus derselben Abfrage.
+
+Die Daten holt der Browser der Besucher direkt von `api.github.com`. Die
+gesamte Logik liegt in [`src/github.js`](src/github.js).
+
+### Warum ohne Zugangstoken
+
+Die Seite ist statisch. Ein Token in den Dateien wäre für jeden Besucher
+lesbar — das ist keine Option. Deshalb laufen die Abfragen unangemeldet, und
+das bringt zwei Einschränkungen mit sich:
+
+| Einschränkung | Auswirkung |
+| ------------- | ---------- |
+| **60 Abrufe pro Stunde und IP** | Reicht im Normalfall locker. Wird das Kontingent doch erreicht, zeigt die Seite den zuletzt geladenen Stand plus einen erklärenden Hinweis. |
+| **Kein Beitragsdiagramm** | Der bekannte grüne Kalender ist nur über die GraphQL-API zu bekommen, und die verlangt zwingend ein Token. Deshalb steht dort stattdessen die echte Aktivitätsliste. |
+| **Nur öffentliche Daten** | Private Repositories tauchen weder in den Zahlen noch in der Aktivität auf. |
+
+### Wie das Kontingent geschont wird
+
+- Ergebnisse liegen 30 Minuten im `localStorage` des Besuchers.
+- Alle Komponenten teilen sich **eine** Abfrage pro Seitenaufruf.
+- Aktualisiert wird alle 5 Minuten, aber nur solange der Tab sichtbar ist.
+- Schlägt der Abruf fehl, bleibt der letzte bekannte Stand stehen — die Seite
+  wird nie leer.
+
+Der Abruf ist zusätzlich in der Content-Security-Policy freigegeben; das ist
+die einzige externe Verbindung, die die Seite herstellt:
+
+```
+connect-src 'self' https://api.github.com;
+```
+
+### Wenn du doch das Beitragsdiagramm willst
+
+Dafür bräuchte es einen kleinen Dienst auf deinem Homeserver, der den Token
+hält und die GraphQL-Antwort zwischenspeichert — etwa ein weiterer Container,
+den der NPM unter `/api/github` an dieselbe Domain hängt. Dann entfielen auch
+die 60 Abrufe pro Stunde, weil nur noch dein Server bei GitHub anfragt.
+Sag Bescheid, falls das dazukommen soll.
 
 ## Mit Docker bauen und starten
 
@@ -334,7 +381,8 @@ Cloudflare-Dashboard sinnvoll sein, falls du dort Caching-Regeln aktiviert hast.
     ├── main.jsx             Einstiegspunkt, bindet die Schriften ein
     ├── App.jsx              Reihenfolge der Abschnitte
     ├── index.css            Design-Tokens, Basisstile, Animationen
-    ├── hooks.js             Einblenden beim Scrollen, aktiver Abschnitt
+    ├── hooks.js             Einblenden beim Scrollen, aktiver Abschnitt, GitHub-Daten
+    ├── github.js            Abruf, Zwischenspeicher und Aufbereitung der GitHub-Daten
     ├── data/
     │   └── profile.js       >>> sämtliche Inhalte <<<
     └── components/
@@ -343,6 +391,8 @@ Cloudflare-Dashboard sinnvoll sein, falls du dort Caching-Regeln aktiviert hast.
         ├── Monogram.jsx     Avatar mit rotierendem Ring
         ├── Backdrop.jsx     Hintergrund-Verläufe und Raster
         ├── Projects.jsx     Projektkarten mit Aufklapp-Details
+        ├── Github.jsx       Live-Zahlen, Sprachen und Aktivität
+        ├── GithubPuls.jsx   Aktivitätshinweis im Einstiegsbereich
         ├── About.jsx        Über mich und Kennzahlen
         ├── Skills.jsx       Technologie-Gruppen
         ├── Timeline.jsx     Werdegang
@@ -381,6 +431,13 @@ Inter und JetBrains Mono sind über `@fontsource-variable` lokal gebündelt.
 Das spart den Umweg über einen Drittanbieter, vermeidet die bekannte
 datenschutzrechtliche Grauzone beim Einbinden von Google Fonts und macht die
 Seite unabhängig von der Erreichbarkeit fremder Server.
+
+**GitHub-Daten kommen aus dem Browser, nicht vom Server.**
+Eine statische Seite kann kein Geheimnis hüten, deshalb laufen die Abfragen
+unangemeldet aus dem Browser der Besucher. Ein 403 der GitHub-API wird dabei
+als erschöpftes Kontingent gewertet: Der Header `x-ratelimit-remaining` ist
+über CORS nicht immer lesbar, und ein 403 auf diesen öffentlichen Endpunkten
+hat praktisch keine andere Ursache.
 
 **Kein HSTS aus dem Container.**
 Der Container spricht ausschließlich HTTP. HSTS gehört an die Stelle, an der

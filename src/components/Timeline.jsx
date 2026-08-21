@@ -4,7 +4,7 @@ import { Section, SectionHeading, Reveal } from './Primitives'
 export default function Timeline() {
   return (
     <Section id="werdegang">
-      <SectionHeading index="04" kicker="Werdegang" title="Woher ich komme" />
+      <SectionHeading index="05" kicker="Werdegang" title="Woher ich komme" />
 
       <div className="relative">
         {/* Vertikale Linie */}

@@ -9,7 +9,8 @@ export const person = {
   name: 'Julian Stengele',
   initials: 'JS',
   role: 'Dualer Informatik-Student',
-  tagline: 'Ich baue Software, die Menschen wirklich benutzen.',
+  tagline:
+    'Zwischen Softwareentwicklung und Künstlicher Intelligenz — ich baue Dinge, die Menschen wirklich weiterbringen.',
   location: 'Friedrichshafen / Meßkirch, Deutschland',
   email: 'julian.stengele@gmail.com',
   course: 'TIK24',
@@ -280,7 +281,7 @@ export const timeline = [
 
 export const contact = {
   headline: 'Lass uns reden',
-  text: `Ob Praxisprojekt, Werkstudentenstelle, eine Vereinswebseite oder einfach eine Frage zu
-         einem meiner Projekte — ich freue mich über Nachrichten. Am schnellsten erreichst du
+  text: `Ob eine Idee für ein gemeinsames Projekt, eine Vereinswebseite oder einfach eine Frage
+         zu einem meiner Projekte — ich freue mich über Nachrichten. Am schnellsten erreichst du
          mich per E-Mail.`,
 }

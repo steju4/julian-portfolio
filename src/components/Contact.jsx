@@ -35,7 +35,7 @@ export default function Contact() {
           <div className="relative">
             <div className="mb-5 flex items-center gap-3">
               <span className="font-mono text-xs font-medium tracking-[0.2em] text-beam-400">
-                05
+                06
               </span>
               <span className="h-px w-10 bg-linear-to-r from-beam-400/60 to-transparent" />
               <span className="font-mono text-xs uppercase tracking-[0.2em] text-mist-500">

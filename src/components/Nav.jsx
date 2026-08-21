@@ -5,6 +5,7 @@ import { person } from '../data/profile'
 
 const LINKS = [
   { id: 'projekte', label: 'Projekte' },
+  { id: 'github', label: 'GitHub' },
   { id: 'ueber-mich', label: 'Über mich' },
   { id: 'stack', label: 'Stack' },
   { id: 'werdegang', label: 'Werdegang' },

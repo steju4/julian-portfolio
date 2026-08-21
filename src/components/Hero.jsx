@@ -2,6 +2,7 @@ import { ArrowDown, ArrowUpRight, MapPin } from 'lucide-react'
 import { person, socials } from '../data/profile'
 import { SocialIcon } from './icons'
 import Monogram from './Monogram'
+import GithubPuls from './GithubPuls'
 
 export default function Hero() {
   const links = socials.filter((s) => s.url)
@@ -15,13 +16,7 @@ export default function Hero() {
         <div className="flex flex-col-reverse items-start gap-14 md:flex-row md:items-center md:justify-between md:gap-16">
           {/* Text */}
           <div className="max-w-2xl">
-            <p className="mb-6 inline-flex items-center gap-2 rounded-full border border-ink-700 bg-ink-850/60 px-3.5 py-1.5 font-mono text-xs tracking-wide text-mist-400 backdrop-blur-sm">
-              <span className="relative flex size-1.5">
-                <span className="absolute inline-flex size-full animate-ping rounded-full bg-beam-400 opacity-70" />
-                <span className="relative inline-flex size-1.5 rounded-full bg-beam-400" />
-              </span>
-              Offen für Praxisprojekte & Werkstudentenstellen
-            </p>
+            <GithubPuls />
 
             <h1 className="text-[2.75rem] leading-[1.05] font-extrabold sm:text-6xl lg:text-7xl">
               <span className="block text-mist-100">Hallo, ich bin</span>
@@ -30,9 +25,7 @@ export default function Hero() {
 
             <p className="mt-7 max-w-xl text-lg leading-relaxed text-mist-400 sm:text-xl">
               {person.role} an der{' '}
-              <span className="font-medium text-mist-100">{person.university}</span> mit
-              Schwerpunkt{' '}
-              <span className="font-medium text-mist-100">{person.focus}</span>.{' '}
+              <span className="font-medium text-mist-100">{person.university}</span>.{' '}
               {person.tagline}
             </p>
 

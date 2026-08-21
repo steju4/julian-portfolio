@@ -4,7 +4,7 @@ import { Section, SectionHeading, Reveal } from './Primitives'
 export default function About() {
   return (
     <Section id="ueber-mich">
-      <SectionHeading index="02" kicker="Über mich" title={about.headline} />
+      <SectionHeading index="03" kicker="Über mich" title={about.headline} />
 
       <div className="grid gap-12 lg:grid-cols-[1.55fr_1fr] lg:gap-16">
         <div className="space-y-5">
