@@ -125,7 +125,7 @@ export const projects = [
     status: 'live',
     year: '2025 — heute',
     summary:
-      'Ein HP ProDesk 400 G2 Mini unter Ubuntu, auf dem alle Dienste per Docker Compose laufen — mein eigenes kleines Rechenzentrum und der Ort, an dem diese Seite gehostet wird.',
+      'Ein HP ProDesk 400 G2 Mini unter Ubuntu, auf dem alle Dienste per Docker Compose laufen — unter anderem diese Seite.',
     details: [
       'Acht Dienste im Dauerbetrieb: Vaultwarden als Passwortmanager, Nginx Proxy Manager, ein Homepage-Dashboard, Uptime Kuma für Monitoring, Portainer, Beszel für Systemmetriken, Stirling-PDF sowie ein selbst geschriebener Termin-Watcher, der eine Arztpraxis auf frei werdende Termine überwacht.',
       'Von außen erreichbar über einen Cloudflare Tunnel — nötig, weil mein Anschluss über DS-Lite läuft und gar keine öffentliche IPv4-Adresse hat. Der Tunnel baut die Verbindung von innen nach außen auf, es muss kein Port geöffnet werden.',
@@ -192,7 +192,7 @@ export const projects = [
     status: 'studium',
     year: '2025',
     summary:
-      'Anwendung zur Verwaltung von Pflanzen und Standorten — mein bislang breitester Technologie-Sprung von TypeScript im Frontend zu Java im Backend.',
+      'Anwendung zur Verwaltung von Pflanzen und Standorten, mit TypeScript im Frontend und Java im Backend.',
     details: [
       'Cross-Platform-Frontend mit Ionic, dadurch aus einer Codebasis heraus als Web- und Mobile-App lauffähig.',
       'Backend als Spring-Boot-Dienst auf Java 21, gebaut über den mitgelieferten Gradle-Wrapper.',
@@ -210,7 +210,7 @@ export const projects = [
     summary:
       'Programm zur Codierung und Decodierung von Morsezeichen — Projektarbeit im Modul „Programmieren C/C++“.',
     details: [
-      'Hardwarenahe Umsetzung in C mit bewusstem Blick auf Speicherverwaltung und Zeigerarithmetik.',
+      'Umsetzung in C.',
       'Plattformunabhängiger Build über CMake.',
     ],
     tech: ['C', 'CMake'],
@@ -224,9 +224,7 @@ export const projects = [
     year: '2025',
     summary:
       'Studienprojekt zur Datenmodellierung: Entwurf und Umsetzung einer relationalen Datenbank zur Verwaltung von Filmen.',
-    details: [
-      'Von der konzeptionellen Modellierung über die Normalisierung bis zu konkreten Abfragen.',
-    ],
+    details: [],
     tech: ['SQL', 'Datenmodellierung'],
     links: [
       { label: 'Quellcode', url: 'https://github.com/steju4/filmverwaltung-db', primary: true },
@@ -320,13 +318,13 @@ export const timeline = [
     period: 'laufend',
     title: 'Eigener Homeserver',
     org: 'Selbstständig',
-    text: 'Aufbau und Betrieb einer eigenen kleinen Serverumgebung mit Docker Compose, Reverse Proxy, Monitoring und automatisierten Backups — erreichbar über einen Cloudflare Tunnel. Der Ort, an dem ich Infrastruktur wirklich lerne.',
+    text: 'Aufbau und Betrieb einer eigenen kleinen Serverumgebung mit Docker Compose, Reverse Proxy, Monitoring und automatisierten Backups — erreichbar über einen Cloudflare Tunnel.',
   },
   {
     period: 'laufend',
     title: 'Ehrenamt im Verein',
     org: 'Musikkapelle Menningen e.V.',
-    text: 'Tenorhorn im Musikverein und Beisitzer im Vorstand. Mitorganisation des Schuppenfests — Vereinsarbeit ist Projektarbeit mit anderen Mitteln.',
+    text: 'Tenorhorn im Musikverein und Beisitzer im Vorstand. Mitorganisation des Schuppenfests.',
   },
 ]
 

@@ -235,7 +235,7 @@ export default function Github() {
         index="02"
         kicker="GitHub"
         title="Woran ich gerade arbeite"
-        lead="Diese Zahlen kommen live aus der GitHub-API und werden bei jedem Aufruf neu geladen — kein von Hand gepflegter Stand."
+        lead="Diese Zahlen kommen direkt aus der öffentlichen GitHub-API — kein von Hand gepflegter Stand."
       />
 
       <Reveal>

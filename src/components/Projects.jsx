@@ -74,7 +74,9 @@ function ProjectCard({ project, index }) {
 
           <p className="text-sm leading-relaxed text-mist-400">{project.summary}</p>
 
-          {/* Aufklappbare Details */}
+          {/* Aufklappbare Details — entfällt, wenn es keine gibt */}
+          {project.details.length > 0 && (
+          <>
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
@@ -105,6 +107,8 @@ function ProjectCard({ project, index }) {
               </ul>
             </div>
           </div>
+          </>
+          )}
 
           {/* Technologien */}
           <div className="mt-6 flex flex-wrap gap-1.5">

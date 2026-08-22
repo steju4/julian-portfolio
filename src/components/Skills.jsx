@@ -9,7 +9,7 @@ export default function Skills() {
         index="04"
         kicker="Stack"
         title="Womit ich arbeite"
-        lead="Technologien, die ich in Studium, Praxisphasen und eigenen Projekten tatsächlich eingesetzt habe — nicht nur einmal ausprobiert."
+        lead="Technologien, die in den Projekten oben zum Einsatz kommen."
       />
 
       <div className="grid gap-5 sm:grid-cols-2">
