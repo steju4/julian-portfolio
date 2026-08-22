@@ -162,7 +162,7 @@ export default function Projects() {
         index="01"
         kicker="Projekte"
         title="Was ich gebaut habe"
-        lead="Von Webseiten, die täglich im Einsatz sind, bis zu neuronalen Netzen, die ich einmal komplett von Hand nachprogrammiert habe. Zuerst das, was live läuft."
+        lead="Zuerst das, was tatsächlich läuft — danach Projekte aus dem Studium."
       />
 
       <div className="grid gap-5 md:grid-cols-2">

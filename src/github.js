@@ -114,28 +114,69 @@ function aufbereiten(profil, repos, events) {
   }
 }
 
+// ---------------------------------------------------------------------------
+//  Aufbereitung der Ereignisse
+//
+//  Wichtig: Die öffentliche Ereignis-Schnittstelle liefert für einen Push
+//  nur "before", "head", "push_id", "ref" und "repository_id" — KEINE
+//  Commit-Anzahl und KEINE Commit-Nachrichten. Frühere Fassungen dieser Datei
+//  haben "payload.size" ausgelesen und sind deshalb immer bei null gelandet.
+//
+//  Angezeigt wird darum nur, was tatsächlich vorhanden ist: der Branch und
+//  der Kurz-Hash. Sollte GitHub die Anzahl doch mitliefern, wird sie genutzt.
+// ---------------------------------------------------------------------------
+
+/** "refs/heads/main" -> "main" */
+function branchName(ref) {
+  if (!ref) return null
+  return ref.replace(/^refs\/(heads|tags)\//, '')
+}
+
 const EVENT_TEXTE = {
   PushEvent: (e) => {
-    // "size" ist die tatsächliche Anzahl; das mitgelieferte commits-Array
-    // deckelt GitHub bei 20 Einträgen.
-    const n = e.payload?.size ?? e.payload?.commits?.length ?? 0
-    return n === 1 ? '1 Commit gepusht' : `${n} Commits gepusht`
+    const anzahl = e.payload?.size ?? e.payload?.distinct_size
+    const branch = branchName(e.payload?.ref)
+
+    if (typeof anzahl === 'number' && anzahl > 0) {
+      return {
+        text: anzahl === 1 ? '1 Commit gepusht' : `${anzahl} Commits gepusht`,
+        branch,
+      }
+    }
+    return { text: 'Commits gepusht', branch }
   },
-  CreateEvent: (e) =>
-    e.payload?.ref_type === 'repository'
-      ? 'Repository angelegt'
-      : `${e.payload?.ref_type === 'branch' ? 'Branch' : 'Tag'} „${e.payload?.ref}" angelegt`,
-  DeleteEvent: (e) => `${e.payload?.ref_type === 'branch' ? 'Branch' : 'Tag'} gelöscht`,
-  PullRequestEvent: (e) =>
-    e.payload?.action === 'closed' && e.payload?.pull_request?.merged
-      ? 'Pull Request zusammengeführt'
-      : `Pull Request ${e.payload?.action === 'opened' ? 'geöffnet' : 'aktualisiert'}`,
-  IssuesEvent: (e) => `Issue ${e.payload?.action === 'opened' ? 'geöffnet' : 'aktualisiert'}`,
-  IssueCommentEvent: () => 'Issue kommentiert',
-  WatchEvent: () => 'Repository mit Stern markiert',
-  ForkEvent: () => 'Repository geforkt',
-  ReleaseEvent: () => 'Release veröffentlicht',
-  PublicEvent: () => 'Repository öffentlich gemacht',
+  CreateEvent: (e) => {
+    const art = e.payload?.ref_type
+    if (art === 'repository') return { text: 'Repository angelegt' }
+    return {
+      text: art === 'tag' ? 'Tag angelegt' : 'Branch angelegt',
+      branch: branchName(e.payload?.ref),
+    }
+  },
+  DeleteEvent: (e) => ({
+    text: e.payload?.ref_type === 'tag' ? 'Tag gelöscht' : 'Branch gelöscht',
+    branch: branchName(e.payload?.ref),
+  }),
+  PullRequestEvent: (e) => {
+    const pr = e.payload?.pull_request
+    const nummer = pr?.number ? `#${pr.number}` : null
+    if (e.payload?.action === 'closed' && pr?.merged) {
+      return { text: `Pull Request ${nummer ?? ''} zusammengeführt`.trim(), titel: pr?.title }
+    }
+    return {
+      text: `Pull Request ${nummer ?? ''} ${e.payload?.action === 'opened' ? 'geöffnet' : 'aktualisiert'}`.replace('  ', ' ').trim(),
+      titel: pr?.title,
+    }
+  },
+  IssuesEvent: (e) => ({
+    text: `Issue ${e.payload?.action === 'opened' ? 'geöffnet' : 'aktualisiert'}`,
+    titel: e.payload?.issue?.title,
+  }),
+  IssueCommentEvent: (e) => ({ text: 'Issue kommentiert', titel: e.payload?.issue?.title }),
+  WatchEvent: () => ({ text: 'Repository mit Stern markiert' }),
+  ForkEvent: () => ({ text: 'Repository geforkt' }),
+  ReleaseEvent: (e) => ({ text: 'Release veröffentlicht', titel: e.payload?.release?.tag_name }),
+  PublicEvent: () => ({ text: 'Repository öffentlich gemacht' }),
 }
 
 function eventsAufbereiten(events) {
@@ -144,14 +185,23 @@ function eventsAufbereiten(events) {
   return events
     .filter((e) => EVENT_TEXTE[e.type])
     .slice(0, 12)
-    .map((e) => ({
-      id: e.id,
-      text: EVENT_TEXTE[e.type](e),
-      repo: e.repo?.name?.replace(`${USER}/`, '') ?? '',
-      repoUrl: e.repo?.name ? `https://github.com/${e.repo.name}` : null,
-      nachricht: e.payload?.commits?.at(-1)?.message?.split('\n')[0] ?? null,
-      zeit: e.created_at,
-    }))
+    .map((e) => {
+      const info = EVENT_TEXTE[e.type](e)
+      const repo = e.repo?.name ?? ''
+      const kurzHash = e.type === 'PushEvent' && e.payload?.head ? e.payload.head.slice(0, 7) : null
+
+      return {
+        id: e.id,
+        text: info.text,
+        branch: info.branch ?? null,
+        titel: info.titel ?? null,
+        kurzHash,
+        commitUrl: kurzHash && repo ? `https://github.com/${repo}/commit/${e.payload.head}` : null,
+        repo: repo.replace(`${USER}/`, ''),
+        repoUrl: repo ? `https://github.com/${repo}` : null,
+        zeit: e.created_at,
+      }
+    })
 }
 
 // --- Eine gemeinsame Abfrage für alle Komponenten -------------------------

@@ -1,4 +1,4 @@
-import { RefreshCw, Star, GitFork, Users, FolderGit2, TriangleAlert } from 'lucide-react'
+import { RefreshCw, Star, Code2, Users, FolderGit2, GitBranch, TriangleAlert } from 'lucide-react'
 import { useGithub } from '../hooks'
 import { relativeZeit, GITHUB_USER } from '../github'
 import { GithubIcon } from './icons'
@@ -33,8 +33,15 @@ function LetzteRepos({ repos }) {
                 <span aria-hidden="true" className="size-2.5 shrink-0 rounded-full border border-ink-600" />
               )}
 
-              <span className="min-w-0 flex-1 truncate text-sm font-medium text-mist-300 transition-colors group-hover:text-beam-300">
-                {r.name}
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-sm font-medium text-mist-300 transition-colors group-hover:text-beam-300">
+                  {r.name}
+                </span>
+                {r.beschreibung && (
+                  <span className="mt-0.5 block truncate text-xs text-mist-500" title={r.beschreibung}>
+                    {r.beschreibung}
+                  </span>
+                )}
               </span>
 
               {r.sterne > 0 && (
@@ -161,7 +168,7 @@ function Aktivitaet({ eintraege, laedt }) {
             aria-hidden="true"
             className="mt-[7px] size-2 shrink-0 rounded-full bg-beam-400/70 ring-4 ring-beam-400/10"
           />
-          <div className="min-w-0">
+          <div className="min-w-0 flex-1">
             <p className="text-sm leading-snug text-mist-300">
               {e.text}
               {e.repo && (
@@ -179,13 +186,37 @@ function Aktivitaet({ eintraege, laedt }) {
               )}
             </p>
 
-            {e.nachricht && (
-              <p className="mt-1 truncate font-mono text-xs text-mist-500" title={e.nachricht}>
-                {e.nachricht}
+            {e.titel && (
+              <p className="mt-1 truncate text-xs text-mist-400" title={e.titel}>
+                {e.titel}
               </p>
             )}
 
-            <p className="mt-1 font-mono text-[11px] text-mist-500/80">{relativeZeit(e.zeit)}</p>
+            <p className="mt-1.5 flex flex-wrap items-center gap-x-2.5 gap-y-1 font-mono text-[11px] text-mist-500">
+              {e.branch && (
+                <span
+                  className="inline-flex max-w-[15rem] items-center gap-1 truncate rounded border border-ink-700 bg-ink-800/60 px-1.5 py-0.5 text-mist-400"
+                  title={e.branch}
+                >
+                  <GitBranch size={10} className="shrink-0" />
+                  {e.branch}
+                </span>
+              )}
+
+              {e.kurzHash && (
+                <a
+                  href={e.commitUrl}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="transition-colors hover:text-beam-300"
+                  title="Commit auf GitHub ansehen"
+                >
+                  {e.kurzHash}
+                </a>
+              )}
+
+              <span className="text-mist-500/80">{relativeZeit(e.zeit)}</span>
+            </p>
           </div>
         </li>
       ))}
@@ -272,8 +303,8 @@ export default function Github() {
             {/* Kennzahlen */}
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
               <Kachel icon={FolderGit2} laedt={laedt} label="Öffentliche Repositories" wert={daten?.profil?.repos ?? '—'} />
+              <Kachel icon={Code2}      laedt={laedt} label="Sprachen im Einsatz"       wert={daten?.sprachen?.length ?? '—'} />
               <Kachel icon={Star}       laedt={laedt} label="Sterne insgesamt"          wert={daten?.sterne ?? '—'} />
-              <Kachel icon={GitFork}    laedt={laedt} label="Forks der Projekte"        wert={daten?.forks ?? '—'} />
               <Kachel icon={Users}      laedt={laedt} label="Follower"                  wert={daten?.profil?.followers ?? '—'} />
             </div>
 

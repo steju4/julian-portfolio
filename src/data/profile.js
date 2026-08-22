@@ -64,9 +64,7 @@ export const about = {
      ein Framework mir abnimmt, kann ich einschätzen, wann ich ihm trauen darf.`,
 
     `Parallel dazu läuft bei mir zu Hause ein kleiner Server, auf dem ich betreibe, was ich
-     baue — von Passwortmanager über Monitoring bis zu dieser Seite hier. Genau dieser Teil,
-     Infrastruktur und Systemintegration, ist die Richtung, in die ich nach dem Studium gehen
-     möchte.`,
+     baue — von Passwortmanager über Monitoring bis zu dieser Seite hier.`,
   ],
 
 }
