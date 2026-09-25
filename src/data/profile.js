@@ -11,7 +11,7 @@ export const person = {
   role: 'Dualer Informatik-Student',
   tagline:
     'Zwischen Softwareentwicklung und Künstlicher Intelligenz — ich baue Dinge, die Menschen wirklich weiterbringen.',
-  location: 'Friedrichshafen / Meßkirch, Deutschland',
+  location: 'Meßkirch, Deutschland',
   course: 'TIK24',
   university: 'DHBW Friedrichshafen',
   focus: 'Künstliche Intelligenz',
@@ -48,20 +48,14 @@ export const about = {
   headline: 'Zwischen Vorlesung, Praxisphase und dem Serverschrank zu Hause',
   paragraphs: [
     `Ich studiere Informatik im dualen Modell an der DHBW Friedrichshafen — Kurs TIK24, mit
-     Schwerpunkt auf Künstlicher Intelligenz. Das duale Prinzip heißt für mich: Was in der
-     Theoriephase an der Tafel steht, muss in der Praxisphase tatsächlich funktionieren.
-     Diese Rückkopplung prägt, wie ich Software baue.`,
+     Schwerpunkt auf Künstlicher Intelligenz. Das duale Prinzip heißt: Was in der
+     Theoriephase an der Tafel steht, muss in der Praxisphase angewendet werden.
+     Diese Rückkopplung prägt, wie und was ich baue.`,
 
     `Am liebsten arbeite ich an Projekten, die einen echten Adressaten haben. Die Webseite der
      Fuchszunft Menningen wird von einem ganzen Verein genutzt, BetterDualis ist aus dem
-     alltäglichen Ärger über ein nicht bedienbares Notenportal entstanden. Aus einem konkreten
-     Problem eine saubere, benutzbare Lösung zu machen, finde ich deutlich spannender als
-     Technik um ihrer selbst willen.`,
-
-    `Auf der KI-Seite reizt mich vor allem, hinter die Abstraktion zu schauen. Ein neuronales
-     Netz mit einem Framework zu trainieren ist die eine Sache — es einmal von Hand
-     nachzubauen, inklusive eigener Backpropagation, eine ganz andere. Erst wenn ich weiß, was
-     ein Framework mir abnimmt, kann ich einschätzen, wann ich ihm trauen darf.`,
+     Ärger über ein veraltetes Notenportal entstanden. Aus einem konkreten
+     Problem eine saubere, benutzbare Lösung zu machen, ist für mich die schönste Form von Softwareentwicklung.`,
 
     `Parallel dazu läuft bei mir zu Hause ein kleiner Server, auf dem ich betreibe, was ich
      baue — von Passwortmanager über Monitoring bis zu dieser Seite hier.`,
@@ -72,7 +66,7 @@ export const about = {
 export const facts = [
   { value: 'TIK24', label: 'Kurs an der DHBW Friedrichshafen' },
   { value: 'KI', label: 'Studienschwerpunkt' },
-  { value: '8', label: 'Dienste auf dem eigenen Homeserver' },
+  { value: '8+', label: 'Dienste auf dem eigenen Homeserver' },
   { value: '4', label: 'Projekte öffentlich im Einsatz' },
 ]
 
@@ -127,13 +121,31 @@ export const projects = [
     summary:
       'Ein HP ProDesk 400 G2 Mini unter Ubuntu, auf dem alle Dienste per Docker Compose laufen — unter anderem diese Seite.',
     details: [
-      'Acht Dienste im Dauerbetrieb: Vaultwarden als Passwortmanager, Nginx Proxy Manager, ein Homepage-Dashboard, Uptime Kuma für Monitoring, Portainer, Beszel für Systemmetriken, Stirling-PDF sowie ein selbst geschriebener Termin-Watcher, der eine Arztpraxis auf frei werdende Termine überwacht.',
-      'Von außen erreichbar über einen Cloudflare Tunnel — nötig, weil mein Anschluss über DS-Lite läuft und gar keine öffentliche IPv4-Adresse hat. Der Tunnel baut die Verbindung von innen nach außen auf, es muss kein Port geöffnet werden.',
+      'Acht Dienste im Dauerbetrieb: Vaultwarden als Passwortmanager, Nginx Proxy Manager, ein Homepage-Dashboard, Uptime Kuma für Monitoring, Portainer, Beszel für Systemmetriken, Stirling-PDF und noch mehr.',
+      'Von außen erreichbar über einen Cloudflare Tunnel — nötig, weil der private Anschluss über DS-Lite läuft und keine öffentliche IPv4-Adresse hat. Der Tunnel baut die Verbindung von innen nach außen auf, es muss kein Port geöffnet werden.',
       'Automatisierte tägliche Benachrichtigung über anstehende Updates per Discord-Webhook und ein eigenes Backup-Skript für die Passwortdatenbank.',
-      'Als Nächstes geplant: Frigate als Videoüberwachung mit KI-gestützter Objekterkennung sowie ein eigener MCP-Server zur Steuerung der Container.',
     ],
     tech: ['Docker Compose', 'Ubuntu', 'Nginx Proxy Manager', 'Cloudflare Tunnel', 'Uptime Kuma', 'Bash'],
     links: [],
+  },
+  {
+    id: 'portfolio',
+    title: 'Diese Webseite',
+    kind: 'Meta-Projekt',
+    status: 'live',
+    year: '2026',
+    summary:
+      'Die Seite, auf der du gerade bist — statisch gebaut, in einen schlanken Container gepackt und auf dem eigenen Homeserver ausgeliefert.',
+    details: [
+      'React mit Vite und Tailwind, zweistufiges Docker-Image mit nginx als Laufzeit. Von außen erreichbar über Nginx Proxy Manager und Cloudflare Tunnel.',
+      'Die GitHub-Zahlen weiter oben werden live aus der öffentlichen API geladen, nicht von Hand gepflegt.',
+      'Schriften und statische Inhalte werden selbst gehostet. Nur die GitHub-Zahlen werden über die öffentliche GitHub-API geladen; Tracking wird nicht eingesetzt.',
+      'Entstanden in Zusammenarbeit mit Claude Code.',
+    ],
+    tech: ['React', 'Vite', 'Tailwind CSS', 'Docker', 'nginx', 'Cloudflare Tunnel'],
+    links: [
+      { label: 'Quellcode', url: 'https://github.com/steju4/julian-portfolio', primary: true },
+    ],
   },
   {
     id: 'schuppenfest',
@@ -153,21 +165,6 @@ export const projects = [
       { label: 'Zur Seite', url: 'https://schuppenfest-website.vercel.app', primary: true },
       { label: 'Quellcode', url: 'https://github.com/steju4/schuppenfest-website' },
     ],
-  },
-  {
-    id: 'esp32-display',
-    title: 'Server-Status-Display',
-    kind: 'Embedded / IoT',
-    status: 'eigen',
-    year: '2026',
-    summary:
-      'Ein ESP32 mit LCD-Display, das die Livewerte meines Homeservers anzeigt — damit der Zustand der Maschine sichtbar ist, ohne erst ein Dashboard zu öffnen.',
-    details: [
-      'Entwickelt mit PlatformIO: Der Mikrocontroller holt sich die Metriken über das Netz und schreibt sie auf ein LCD1602.',
-      'Als Nächstes ein ESP32-S3 mit OV5640-Kameramodul, geflasht und getestet — Grundlage für eigene Versuche mit Bilderkennung auf dem Gerät selbst.',
-    ],
-    tech: ['ESP32', 'C++', 'PlatformIO', 'LCD1602'],
-    links: [],
   },
   {
     id: 'feels-like',
@@ -192,7 +189,7 @@ export const projects = [
     status: 'studium',
     year: '2025',
     summary:
-      'Anwendung zur Verwaltung von Pflanzen und Standorten, mit TypeScript im Frontend und Java im Backend.',
+      'Anwendung zur Verwaltung von Pflanzen und Standorten, mit TypeScript im Frontend und Java im Backend. Umgesetzt im Rahmen eines Studienprojektes in "Web Engineering".',
     details: [
       'Cross-Platform-Frontend mit Ionic, dadurch aus einer Codebasis heraus als Web- und Mobile-App lauffähig.',
       'Backend als Spring-Boot-Dienst auf Java 21, gebaut über den mitgelieferten Gradle-Wrapper.',
@@ -230,25 +227,6 @@ export const projects = [
       { label: 'Quellcode', url: 'https://github.com/steju4/filmverwaltung-db', primary: true },
     ],
   },
-  {
-    id: 'portfolio',
-    title: 'Diese Webseite',
-    kind: 'Meta-Projekt',
-    status: 'live',
-    year: '2026',
-    summary:
-      'Die Seite, auf der du gerade bist — statisch gebaut, in einen schlanken Container gepackt und auf dem eigenen Homeserver ausgeliefert.',
-    details: [
-      'React mit Vite und Tailwind, zweistufiges Docker-Image mit nginx als Laufzeit. Von außen erreichbar über Nginx Proxy Manager und Cloudflare Tunnel.',
-      'Die GitHub-Zahlen weiter oben werden live aus der öffentlichen API geladen, nicht von Hand gepflegt.',
-      'Schriften sind lokal gebündelt, es werden keinerlei Ressourcen von Dritten geladen und kein Tracking eingesetzt.',
-      'Entstanden in Zusammenarbeit mit Claude Code.',
-    ],
-    tech: ['React', 'Vite', 'Tailwind CSS', 'Docker', 'nginx', 'Cloudflare Tunnel'],
-    links: [
-      { label: 'Quellcode', url: 'https://github.com/steju4/julian-portfolio', primary: true },
-    ],
-  },
 ]
 
 // ---------------------------------------------------------------------------
@@ -266,19 +244,6 @@ export const skillGroups = [
     title: 'Backend & Daten',
     icon: 'server',
     items: ['Node.js', 'Express', 'Python', 'Flask', 'Java', 'Spring Boot', 'SQL', 'Sequelize'],
-  },
-  {
-    id: 'ki',
-    title: 'KI & Data Science',
-    icon: 'brain',
-    items: [
-      'TensorFlow / Keras',
-      'NumPy',
-      'Pandas',
-      'Jupyter',
-      'CNNs',
-      'Transfer Learning',
-    ],
   },
   {
     id: 'tooling',
@@ -305,7 +270,7 @@ export const timeline = [
     period: 'seit 2024',
     title: 'Duales Studium Informatik',
     org: 'DHBW Friedrichshafen — Kurs TIK24',
-    text: 'Studium im dreimonatigen Wechsel zwischen Theorie- und Praxisphasen, mit Schwerpunkt auf Künstlicher Intelligenz. Inhalte von Programmierung in C und Java über Software Engineering und Datenbanken bis zu maschinellem Lernen. Abschluss vorgesehen für 2027.',
+    text: 'Studium im Wechsel zwischen Theorie- und Praxisphasen, mit Schwerpunkt auf Künstlicher Intelligenz. Inhalte von Programmierung in C und Java über Software Engineering bis zu Datenbanken. Abschluss vorgesehen für 2027.',
     current: true,
   },
   {
@@ -330,7 +295,6 @@ export const timeline = [
 
 export const contact = {
   headline: 'Lass uns reden',
-  text: `Ob eine Idee für ein gemeinsames Projekt, eine Vereinswebseite oder einfach eine Frage
-         zu einem meiner Projekte — ich freue mich über Nachrichten. Am schnellsten erreichst du
-         mich per E-Mail; die Adresse gebe ich nach einer kurzen Sicherheitsabfrage frei.`,
+  text: `Du hast eine Frage zu einem Projekt, möchtest dich austauschen oder hast eine Idee?
+         Schreib mir gern per E-Mail.`,
 }

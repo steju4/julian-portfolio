@@ -113,6 +113,95 @@
     -webkit-mask-image: linear-gradient(to bottom, black 0%, black 45%, transparent 100%);
   }
 
+  /* Interaktiver Systemkern im Hero */
+  .system-core {
+    --core-x: 50%;
+    --core-y: 50%;
+    --core-rx: 0deg;
+    --core-ry: 0deg;
+    transform: perspective(900px) rotateX(var(--core-rx)) rotateY(var(--core-ry));
+    transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+    transform-style: preserve-3d;
+  }
+
+  .system-core:hover { transition-duration: 80ms; }
+
+  .system-core > svg path,
+  .system-core > svg circle {
+    fill: color-mix(in srgb, var(--color-beam-400) 70%, transparent);
+    stroke: color-mix(in srgb, var(--color-beam-400) 38%, transparent);
+    stroke-width: 1;
+  }
+
+  .system-core-glow {
+    background: radial-gradient(
+      circle at var(--core-x) var(--core-y),
+      color-mix(in srgb, var(--color-beam-400) 24%, transparent),
+      color-mix(in srgb, var(--color-pulse-500) 10%, transparent) 34%,
+      transparent 68%
+    );
+  }
+
+  .system-core-label {
+    position: absolute;
+    z-index: 20;
+    border: 1px solid var(--color-ink-700);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--color-ink-900) 88%, transparent);
+    padding: 0.35rem 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
+    color: var(--color-mist-400);
+    opacity: 0;
+    transform: translateY(6px) scale(0.96);
+    transition: opacity 220ms ease, transform 220ms ease, border-color 220ms ease;
+    backdrop-filter: blur(10px);
+  }
+
+  .system-core:hover .system-core-label {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    border-color: color-mix(in srgb, var(--color-beam-400) 35%, var(--color-ink-700));
+  }
+
+  /* Projektkarte: dezenter Lichtkegel und minimale räumliche Bewegung */
+  .project-card {
+    --pointer-x: 50%;
+    --pointer-y: 50%;
+    --card-rx: 0deg;
+    --card-ry: 0deg;
+    transform: perspective(1100px) rotateX(var(--card-rx)) rotateY(var(--card-ry));
+    transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+                border-color 300ms ease,
+                box-shadow 300ms ease;
+    transform-style: preserve-3d;
+  }
+
+  .project-card-glow {
+    background: radial-gradient(
+      420px circle at var(--pointer-x) var(--pointer-y),
+      color-mix(in srgb, var(--color-beam-400) 13%, transparent),
+      transparent 58%
+    );
+    opacity: 0;
+    transition: opacity 260ms ease;
+  }
+
+  @media (hover: hover) {
+    .project-card:hover {
+      border-color: color-mix(in srgb, var(--color-beam-400) 35%, var(--color-ink-600));
+      box-shadow: 0 24px 70px color-mix(in srgb, var(--color-ink-950) 70%, transparent);
+      transition-duration: 80ms, 300ms, 300ms;
+    }
+
+    .project-card:hover .project-card-glow { opacity: 1; }
+  }
+
+  .command-palette {
+    animation: palette-in 180ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
   /* Einblenden beim Scrollen */
   .reveal {
     opacity: 0;
@@ -141,6 +230,16 @@
   to   { transform: rotate(360deg); }
 }
 
+@keyframes orbit-spin-reverse {
+  from { transform: rotate(360deg); }
+  to   { transform: rotate(0deg); }
+}
+
+@keyframes palette-in {
+  from { opacity: 0; transform: translateY(-10px) scale(0.985); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
 @keyframes cue-bounce {
   0%, 100% { transform: translateY(0); opacity: 0.55; }
   50%      { transform: translateY(7px); opacity: 1; }
@@ -148,6 +247,7 @@
 
 .animate-aurora { animation: aurora-drift 24s ease-in-out infinite; }
 .animate-orbit  { animation: orbit-spin 26s linear infinite; }
+.animate-orbit-reverse { animation: orbit-spin-reverse 38s linear infinite; }
 .animate-cue    { animation: cue-bounce 2.2s ease-in-out infinite; }
 
 /* ------------------------------------------------------------------ */
@@ -163,4 +263,6 @@
   }
 
   .reveal { opacity: 1; transform: none; }
+  .system-core,
+  .project-card { transform: none !important; }
 }

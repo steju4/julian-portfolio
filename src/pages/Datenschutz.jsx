@@ -90,10 +90,10 @@ export default function Datenschutz() {
           abgerufen — nicht über meinen Server.
         </p>
         <p>
-          Dabei erfährt die GitHub, Inc. (88 Colin P. Kelly Jr. Street, San Francisco, CA
-          94107, USA), ein Unternehmen von Microsoft, die IP-Adresse und die technischen
-          Angaben des Browsers. Ein Nutzerkonto ist dafür nicht erforderlich, und es werden
-          keine Daten über die Besucher an GitHub übermittelt, die über die Anfrage selbst
+          GitHub, Inc. (88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA), ein
+          Unternehmen von Microsoft, erhält dabei die IP-Adresse und die technischen Angaben
+          des Browsers. Ein Nutzerkonto ist dafür nicht erforderlich, und es werden keine
+          Daten über die Besucher an GitHub übermittelt, die über die Anfrage selbst
           hinausgehen.
         </p>
         <p>
@@ -173,7 +173,7 @@ export default function Datenschutz() {
       <Abschnitt titel="Änderungen">
         <p>
           Ändert sich etwas an der Seite, das die Verarbeitung von Daten betrifft, wird
-          dieser Text entsprechend angepasst. Stand: August 2026.
+          dieser Text entsprechend angepasst. Stand: September 2026.
         </p>
       </Abschnitt>
     </Unterseite>

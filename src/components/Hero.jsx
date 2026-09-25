@@ -13,9 +13,9 @@ export default function Hero() {
       className="relative flex min-h-svh items-center px-6 pb-20 pt-32 sm:px-8"
     >
       <div className="mx-auto w-full max-w-6xl">
-        <div className="flex flex-col-reverse items-start gap-14 md:flex-row md:items-center md:justify-between md:gap-16">
+        <div className="flex min-w-0 flex-col-reverse items-start gap-14 md:flex-row md:items-center md:justify-between md:gap-16">
           {/* Text */}
-          <div className="max-w-2xl">
+          <div className="min-w-0 w-full max-w-2xl">
             <GithubPuls />
 
             <h1 className="text-[2.75rem] leading-[1.05] font-extrabold sm:text-6xl lg:text-7xl">
@@ -84,7 +84,7 @@ export default function Hero() {
           </div>
 
           {/* Monogramm */}
-          <div className="md:pr-6">
+          <div className="flex w-full justify-center md:w-auto md:pr-6">
             <Monogram />
           </div>
         </div>

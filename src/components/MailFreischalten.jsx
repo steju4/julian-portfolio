@@ -132,8 +132,8 @@ export default function MailFreischalten() {
       </button>
 
       <p className="mt-3 max-w-md text-xs leading-relaxed text-mist-500">
-        Eine kurze Rechenaufgabe genügt. Die Adresse steht nicht im Quelltext der Seite —
-        so finden sie automatische Adresssammler nicht.
+        Zum Schutz vor einfachen Adresssammlern wird die Adresse nach einer kurzen
+        Rechenaufgabe angezeigt.
       </p>
     </div>
   )

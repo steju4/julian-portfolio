@@ -1,5 +1,5 @@
 import { StrictMode } from 'react'
-import { hydrateRoot } from 'react-dom/client'
+import { createRoot, hydrateRoot } from 'react-dom/client'
 import App from './App.jsx'
 // Schriften lokal gebündelt – keine Requests an Drittanbieter (DSGVO)
 import '@fontsource-variable/inter'
@@ -10,10 +10,16 @@ import './index.css'
 // scripts/prerender.mjs). Der Browser übernimmt dieses HTML und hängt sich
 // nur noch daran — statt alles zu verwerfen und neu aufzubauen.
 const wurzel = document.getElementById('root')
-
-hydrateRoot(
-  wurzel,
+const app = (
   <StrictMode>
     <App seite={wurzel.dataset.seite || 'start'} />
-  </StrictMode>,
+  </StrictMode>
 )
+
+// Im Entwicklungsserver ist die Wurzel leer. Der Produktions-Build enthält
+// dagegen das vorgerenderte HTML und wird ohne zweiten Aufbau hydriert.
+if (wurzel.hasChildNodes()) {
+  hydrateRoot(wurzel, app)
+} else {
+  createRoot(wurzel).render(app)
+}

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { ArrowUpRight, ChevronDown } from 'lucide-react'
 import { GithubIcon } from './icons'
 import { projects } from '../data/profile'
@@ -42,21 +42,48 @@ function StatusBadge({ status }) {
 
 function ProjectCard({ project, index }) {
   const [open, setOpen] = useState(false)
+  const cardRef = useRef(null)
   const primary = project.links.find((l) => l.primary)
   const code = project.links.find((l) => l.url.includes('github.com'))
   const panelId = `projekt-details-${project.id}`
 
+  const karteBewegen = (event) => {
+    if (event.pointerType && event.pointerType !== 'mouse') return
+
+    const node = cardRef.current
+    if (!node) return
+
+    const rect = node.getBoundingClientRect()
+    const x = (event.clientX - rect.left) / rect.width
+    const y = (event.clientY - rect.top) / rect.height
+    const rotateX = (0.5 - y) * 2.5
+    const rotateY = (x - 0.5) * 3
+
+    node.style.cssText = `--pointer-x:${x * 100}%;--pointer-y:${y * 100}%;--card-rx:${rotateX}deg;--card-ry:${rotateY}deg`
+  }
+
+  const karteZuruecksetzen = () => {
+    if (cardRef.current) cardRef.current.style.cssText = ''
+  }
+
   return (
     <Reveal delay={(index % 2) * 90}>
-      <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-ink-700 bg-ink-850/50 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-ink-600 hover:shadow-2xl hover:shadow-ink-950/60">
+      <article
+        ref={cardRef}
+        onPointerMove={karteBewegen}
+        onPointerLeave={karteZuruecksetzen}
+        className="project-card group relative flex h-full flex-col overflow-hidden rounded-2xl border border-ink-700 bg-ink-850/50 backdrop-blur-sm"
+      >
+        <span aria-hidden="true" className="project-card-glow absolute inset-0 pointer-events-none" />
+
         {/* Akzentlinie oben */}
         <span
-          className={`absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-beam-400/60 to-transparent transition-opacity duration-300 ${
+          className={`absolute inset-x-0 top-0 z-20 h-px bg-linear-to-r from-transparent via-beam-400/60 to-transparent transition-opacity duration-300 ${
             project.status === 'live' ? 'opacity-100' : 'opacity-0 group-hover:opacity-70'
           }`}
         />
 
-        <div className="flex flex-1 flex-col p-6 sm:p-7">
+        <div className="relative z-10 flex flex-1 flex-col p-6 sm:p-7">
           <div className="mb-4 flex items-start justify-between gap-4">
             <div className="min-w-0">
               <div className="mb-2.5 flex flex-wrap items-center gap-2">

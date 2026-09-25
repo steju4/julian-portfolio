@@ -14,15 +14,10 @@ auf dem eigenen Homeserver.
 1. [Tech-Stack](#tech-stack)
 2. [Lokal entwickeln](#lokal-entwickeln)
 3. [Inhalte pflegen](#inhalte-pflegen)
-4. [Suchmaschinen und KI-Crawler](#suchmaschinen-und-ki-crawler)
+4. [Suchmaschinen und Crawler](#suchmaschinen-und-crawler)
 5. [Live-Daten von GitHub](#live-daten-von-github)
-6. [Mit Docker bauen und starten](#mit-docker-bauen-und-starten)
-7. [Deployment auf dem Homeserver](#deployment-auf-dem-homeserver)
-8. [Nginx Proxy Manager einrichten](#nginx-proxy-manager-einrichten)
-9. [Cloudflare Tunnel einrichten](#cloudflare-tunnel-einrichten)
-10. [Aktualisieren](#aktualisieren)
-11. [Projektstruktur](#projektstruktur)
-12. [Entscheidungen im Detail](#entscheidungen-im-detail)
+6. [Projektstruktur](#projektstruktur)
+7. [Entscheidungen im Detail](#entscheidungen-im-detail)
 
 ---
 
@@ -37,8 +32,9 @@ auf dem eigenen Homeserver.
 | Schriften    | Inter & JetBrains Mono, **lokal gebündelt**          |
 | Auslieferung | nginx:alpine im Docker-Container                     |
 
-Die Seite lädt **keine externen Ressourcen**. Keine Google Fonts, kein CDN,
-kein Analytics — alles kommt vom eigenen Server. Das hält die Seite
+Schriften und statische Inhalte kommen vollständig vom eigenen Server. Es gibt
+keine Google Fonts, kein CDN und kein Analytics. Die einzige externe Verbindung
+ist der Abruf öffentlicher Profildaten von der GitHub-API. Das hält die Seite
 datenschutzfreundlich und erlaubt eine strenge Content-Security-Policy.
 
 ---
@@ -58,14 +54,13 @@ npm run preview  # den gebauten Stand lokal ansehen
 
 ## Inhalte pflegen
 
-**Alle Texte, Projekte und Links stehen in
-[`src/data/profile.js`](src/data/profile.js).** Die Komponenten lesen
-ausschließlich aus dieser Datei — für inhaltliche Änderungen muss also kein
-Komponenten-Code angefasst werden.
+Die zentralen Inhalte der Startseite stehen in
+[`src/data/profile.js`](src/data/profile.js). Projekte, Profilangaben und die
+meisten Texte lassen sich dort ändern, ohne Komponenten-Code anzufassen.
 
 | Konstante     | Inhalt                                                    |
 | ------------- | --------------------------------------------------------- |
-| `person`      | Name, Rolle, Studienort, E-Mail                            |
+| `person`      | Name, Rolle und Studienort                                 |
 | `socials`     | Profil-Links (GitHub, LinkedIn, Instagram, E-Mail)         |
 | `about`       | Überschrift und Absätze im Abschnitt „Über mich"           |
 | `facts`       | Die vier Kennzahlen-Kacheln                                |
@@ -74,47 +69,13 @@ Komponenten-Code angefasst werden.
 | `timeline`    | Stationen im Werdegang                                     |
 | `contact`     | Text im Kontaktbereich                                     |
 
-### Noch offen: LinkedIn und Instagram
 
-In `socials` sind die Felder `url` für **LinkedIn** und **Instagram** aktuell
-leer. Trag dort jeweils die vollständige URL ein:
-
-```js
-{ id: 'linkedin',  label: 'LinkedIn',  handle: 'Julian Stengele', url: 'https://www.linkedin.com/in/...' },
-{ id: 'instagram', label: 'Instagram', handle: '@deinhandle',     url: 'https://www.instagram.com/...' },
-```
-
-Einträge mit leerem `url` werden automatisch ausgeblendet — es entstehen
-also keine toten Links, solange die Werte fehlen.
-
-### Ein Projekt ergänzen
-
-Ein neues Objekt in `projects` einfügen. `status: 'live'` erzeugt das
-türkise Live-Abzeichen, jeder andere Wert das graue „Studium"-Abzeichen.
-
-```js
-{
-  id: 'kurzname',
-  title: 'Titel des Projekts',
-  kind: 'Web-App',              // Kategorie über dem Titel
-  status: 'live',               // 'live' | 'studium'
-  year: '2026',
-  summary: 'Ein bis zwei Sätze, die im eingeklappten Zustand sichtbar sind.',
-  details: ['Punkt eins.', 'Punkt zwei.'],   // erscheinen unter „Details"
-  tech: ['React', 'Vite'],
-  links: [{ label: 'Zur Seite', url: 'https://…', primary: true }],
-}
-```
-
----
-
-## Suchmaschinen und KI-Crawler
+## Suchmaschinen und Crawler
 
 Eine React-Anwendung liefert normalerweise ein leeres HTML-Dokument aus und
-baut den Inhalt erst im Browser auf. Google kommt damit zurecht, weil es
-JavaScript ausführt — **die meisten KI-Crawler tun das nicht**. GPTBot,
-ClaudeBot, PerplexityBot und Konsorten lesen das rohe HTML. Sie hätten hier
-eine vollständig leere Seite gesehen.
+baut den Inhalt erst im Browser auf. Suchmaschinen können JavaScript zwar
+ausführen, fertiges HTML ist für Indexierung, Link-Vorschauen und einfache
+Crawler aber zuverlässiger.
 
 Deshalb wird die Seite **beim Bauen einmal zu fertigem HTML gerendert**:
 
@@ -125,9 +86,14 @@ npm run build
   └─ node scripts/prerender.mjs          rendert zu HTML, schreibt es in dist/index.html
 ```
 
-Das Ergebnis: rund **8.800 Zeichen Text und 22 Überschriften** stehen direkt
+Das Ergebnis: rund **7.700 Zeichen Text und 21 Überschriften** stehen direkt
 im ausgelieferten Dokument. Im Browser übernimmt React dieses HTML per
 `hydrateRoot`, statt alles zu verwerfen.
+
+Die `robots.txt` erlaubt normale Suchmaschinen und Suchassistenten. Crawler,
+die Inhalte ausschließlich zum Trainieren von Modellen sammeln, sind dort
+explizit gesperrt. In der `sitemap.xml` steht nur die Startseite; der
+Datenschutzhinweis bleibt erreichbar, trägt aber `noindex`.
 
 Prüfen lässt sich das ohne Browser:
 
@@ -135,7 +101,6 @@ Prüfen lässt sich das ohne Browser:
 curl -s https://julian.stengele-home.de | grep -c "<h2"
 # erwartet: eine Zahl > 0, nicht 0
 ```
-
 
 ### Mehr als eine Seite
 
@@ -170,9 +135,8 @@ Hydration-Fehler in der Konsole.
 - **Strukturierte Daten** (`schema.org/Person` und `WebSite`) als JSON-LD im
   `<head>`, damit Suchmaschinen und KI-Crawler die Seite einordnen können,
   ohne den Fließtext interpretieren zu müssen.
-- **`robots.txt`** listet die Crawler ausdrücklich auf — getrennt nach
-  Suchmaschinen, KI-Suche und solchen, die auch für das Training sammeln.
-  Wer Letzteres nicht will, ersetzt dort `Allow: /` durch `Disallow: /`.
+- **`robots.txt`** erlaubt Suchmaschinen und Suchassistenten den Zugriff.
+  Crawler, die Inhalte für das Training von Modellen sammeln, sind gesperrt.
 - **Vorschaubild als PNG** (`og-image.png`, 1200 × 630). Bewusst nicht als
   SVG: Google, LinkedIn und WhatsApp zeigen SVG-Vorschaubilder nicht an.
 - **`<noscript>`-Regel**, die die Einblend-Animation abschaltet — sonst wäre
@@ -183,17 +147,9 @@ Hydration-Fehler in der Konsole.
 ## Datenschutzhinweis
 
 Der Text unter [`src/pages/Datenschutz.jsx`](src/pages/Datenschutz.jsx)
-beschreibt genau das, was die Seite technisch tut: Server-Protokolle,
-Auslieferung über Cloudflare, die GitHub-Abfrage aus dem Browser der Besucher
-und den Zwischenspeicher im Browser.
+beschreibt genau das, was die Seite technisch tut.
 
-> **Wichtig beim Weiterbauen:** Kommt eine Besucherstatistik, eine Schriftart
-> von einem fremden Server oder eine weitere externe Schnittstelle dazu, muss
-> dieser Text mitgeführt werden. Er ist kein Ersatz für eine Rechtsberatung.
-
-Ein Impressum ist bewusst nicht enthalten. Ob eines nötig ist, hängt davon ab,
-ob die Seite als rein privat gilt — das ist eine Einschätzung, die nur der
-Betreiber treffen kann.
+Ein Impressum ist bewusst nicht enthalten.
 
 ---
 
@@ -205,30 +161,7 @@ gesetzt wird sie erst, wenn jemand im Kontaktbereich eine kurze Rechenaufgabe
 gelöst hat.
 
 Ein Adresssammler, der den Quelltext nach dem Muster `name@domain.tld`
-durchsucht, findet hier nichts:
-
-```bash
-grep -rE "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}" dist/
-# erwartet: keine Ausgabe
-```
-
-**Ehrliche Einordnung:** Das ist kein kryptografischer Schutz. Wer einen
-echten Browser automatisiert und die Aufgabe löst, kommt an die Adresse.
-Gegen die übliche Sorte Massensammler, die nur HTML nach Mustern absucht,
-wirkt es zuverlässig — und anders als ein eingebundenes Captcha eines
-Drittanbieters kostet es weder eine Ausnahme in der Content-Security-Policy
-noch Daten der Besucher.
-
-Die Aufgabe ist als Text formuliert statt als Bild, damit sie mit Tastatur
-und Screenreader bedienbar bleibt. Bei einer falschen Antwort erscheint eine
-neue Aufgabe.
-
-**Adresse ändern:** Die verfremdete Zeichenkette in `src/mail.js` neu
-erzeugen —
-
-```bash
-node -e "const m='neue@adresse.de';console.log(Buffer.from([...m].map(c=>c.charCodeAt(0)^0x5c)).toString('base64'))"
-```
+durchsucht, findet hier nichts.
 
 ## Live-Daten von GitHub
 
@@ -240,18 +173,6 @@ GitHub · vor …") stammt aus derselben Abfrage.
 
 Die Daten holt der Browser der Besucher direkt von `api.github.com`. Die
 gesamte Logik liegt in [`src/github.js`](src/github.js).
-
-### Warum ohne Zugangstoken
-
-Die Seite ist statisch. Ein Token in den Dateien wäre für jeden Besucher
-lesbar — das ist keine Option. Deshalb laufen die Abfragen unangemeldet, und
-das bringt zwei Einschränkungen mit sich:
-
-| Einschränkung | Auswirkung |
-| ------------- | ---------- |
-| **60 Abrufe pro Stunde und IP** | Reicht im Normalfall locker. Wird das Kontingent doch erreicht, zeigt die Seite den zuletzt geladenen Stand plus einen erklärenden Hinweis. |
-| **Kein Beitragsdiagramm** | Der bekannte grüne Kalender ist nur über die GraphQL-API zu bekommen, und die verlangt zwingend ein Token. Deshalb steht dort stattdessen die echte Aktivitätsliste. |
-| **Nur öffentliche Daten** | Private Repositories tauchen weder in den Zahlen noch in der Aktivität auf. |
 
 ### Wie das Kontingent geschont wird
 
@@ -268,232 +189,11 @@ die einzige externe Verbindung, die die Seite herstellt:
 connect-src 'self' https://api.github.com;
 ```
 
-### Wenn du doch das Beitragsdiagramm willst
-
-Dafür bräuchte es einen kleinen Dienst auf deinem Homeserver, der den Token
-hält und die GraphQL-Antwort zwischenspeichert — etwa ein weiterer Container,
-den der NPM unter `/api/github` an dieselbe Domain hängt. Dann entfielen auch
-die 60 Abrufe pro Stunde, weil nur noch dein Server bei GitHub anfragt.
-Sag Bescheid, falls das dazukommen soll.
-
-## Mit Docker bauen und starten
-
-Das `Dockerfile` ist zweistufig: Die erste Stufe baut die Seite mit Node, die
-zweite enthält nur noch nginx und die fertigen statischen Dateien. Node und
-`node_modules` landen **nicht** im Endergebnis — das Image bleibt bei rund
-95 MB.
-
-```bash
-docker compose up -d --build
-```
-
-Danach ist die Seite auf dem Server unter `http://<server-ip>:8080` erreichbar.
-
-Ohne Compose:
-
-```bash
-docker build -t julian-portfolio:latest .
-docker run -d --name julian-portfolio -p 8080:80 --restart unless-stopped julian-portfolio:latest
-```
-
-Der Container bringt einen Health-Endpunkt mit:
-
-```bash
-curl http://localhost:8080/healthz     # -> ok
-docker ps                              # Spalte STATUS zeigt "healthy"
-```
-
----
-
-## Deployment auf dem Homeserver
-
-> **Ausführliche Schritt-für-Schritt-Anleitung inklusive Fehlersuche:
-> [`DEPLOYMENT.md`](DEPLOYMENT.md)** — das hier ist die Kurzfassung.
-
-Auf dem Server (`julian@192.168.178.70`):
-
-```bash
-# Einmalig: Repository holen
-cd ~/docker            # oder wo deine Compose-Projekte liegen
-git clone https://github.com/steju4/julian-portfolio.git
-cd julian-portfolio
-
-# Bauen und starten
-docker compose up -d --build
-
-# Prüfen
-docker compose ps
-curl -I http://localhost:8080
-```
-
-### Anbindung an den Nginx Proxy Manager — zwei Wege
-
-**Variante A — Port auf dem Host (Standard in der `docker-compose.yml`)**
-
-Der Container veröffentlicht Port `8080`. Im NPM trägst du als Ziel die
-Server-IP und Port `8080` ein. Funktioniert immer, auch wenn NPM außerhalb
-von Docker läuft.
-
-**Variante B — gemeinsames Docker-Netz (sauberer)**
-
-Läuft der NPM selbst als Container, können beide dasselbe Netz nutzen. Dann
-muss gar kein Port auf dem Host offen stehen.
-
-```bash
-# Namen des NPM-Netzes herausfinden
-docker inspect <npm-container-name> -f '{{range $k, $v := .NetworkSettings.Networks}}{{$k}}{{end}}'
-```
-
-In der `docker-compose.yml` anschließend den `ports`-Block entfernen und die
-auskommentierten `networks`-Blöcke aktivieren, den Netznamen eintragen. Im NPM
-ist das Ziel dann der Containername `julian-portfolio` auf Port `80`.
-
----
-
-## Nginx Proxy Manager einrichten
-
-Im NPM unter **Hosts → Proxy Hosts → Add Proxy Host**:
-
-**Reiter „Details"**
-
-| Feld                    | Wert                                                    |
-| ----------------------- | ------------------------------------------------------- |
-| Domain Names            | `julian.stengele-home.de`                               |
-| Scheme                  | `http`                                                  |
-| Forward Hostname / IP   | `192.168.178.70` (Variante A) bzw. `julian-portfolio` (B) |
-| Forward Port            | `8080` (Variante A) bzw. `80` (Variante B)              |
-| Cache Assets            | aus — das Caching erledigt bereits nginx im Container    |
-| Block Common Exploits   | an                                                       |
-| Websockets Support      | aus (wird nicht gebraucht)                              |
-
-**Reiter „SSL"**
-
-| Feld                   | Wert                                    |
-| ---------------------- | --------------------------------------- |
-| SSL Certificate        | Let's Encrypt anfordern oder Cloudflare-Origin-Zertifikat |
-| Force SSL              | an                                       |
-| HTTP/2 Support         | an                                       |
-| HSTS Enabled           | an                                       |
-
-> **Hinweis:** HSTS wird bewusst **hier** gesetzt und nicht im Container.
-> Der Container spricht nur HTTP — TLS endet bei Cloudflare bzw. im NPM.
-> Ein HSTS-Header aus dem Container wäre wirkungslos bis schädlich.
-
-Nutzt du den Cloudflare Tunnel (siehe unten), ist auch der Weg ohne
-Let's-Encrypt-Zertifikat möglich: Cloudflare terminiert TLS nach außen, und
-der Tunnel spricht intern per HTTP mit dem NPM.
-
----
-
-## Cloudflare Tunnel einrichten
-
-Diesen Teil musst du selbst vornehmen — hier die genauen Schritte.
-
-### 1. DNS-Eintrag
-
-Im Cloudflare-Dashboard unter **DNS** der Zone `stengele-home.de`:
-
-Wird der Tunnel über das Dashboard (Zero Trust) konfiguriert, legt Cloudflare
-den nötigen `CNAME` auf `<tunnel-id>.cfargotunnel.com` **automatisch** an.
-Es ist also kein manueller A-Record auf deine Heim-IP nötig — und auch nicht
-erwünscht, denn der Tunnel arbeitet ausgehend.
-
-Der Eintrag muss auf **Proxied** (orange Wolke) stehen.
-
-### 2. Route im Tunnel anlegen
-
-**Zero Trust → Networks → Tunnels → deinen Tunnel wählen → Public Hostnames
-→ Add a public hostname**
-
-| Feld       | Wert                                        |
-| ---------- | ------------------------------------------- |
-| Subdomain  | `julian`                                    |
-| Domain     | `stengele-home.de`                          |
-| Path       | leer lassen                                 |
-| Type       | `HTTP`                                      |
-| URL        | `192.168.178.70:80` — die Adresse des NPM   |
-
-Der Tunnel zeigt also auf den **Nginx Proxy Manager**, nicht direkt auf den
-Portfolio-Container. Der NPM entscheidet dann anhand des Hostnamens, welchen
-Dienst er ausliefert — genauso wie bei deinen anderen Diensten.
-
-> Läuft `cloudflared` auf demselben Host wie der NPM, funktioniert
-> `localhost:80` ebenfalls. Läuft `cloudflared` als Container, ist die
-> Server-IP der zuverlässigere Weg.
-
-### 3. Konfiguration per Datei (Alternative zum Dashboard)
-
-Wenn du deinen Tunnel über `config.yml` verwaltest, statt über das Dashboard:
-
-```yaml
-tunnel: <tunnel-id>
-credentials-file: /etc/cloudflared/<tunnel-id>.json
-
-ingress:
-  - hostname: julian.stengele-home.de
-    service: http://192.168.178.70:80
-  # weitere Dienste hier ergänzen
-  - service: http_status:404
-```
-
-Danach neu laden:
-
-```bash
-sudo systemctl restart cloudflared
-# oder, im Container:
-docker restart cloudflared
-```
-
-Und den DNS-Eintrag einmalig anlegen:
-
-```bash
-cloudflared tunnel route dns <tunnel-name> julian.stengele-home.de
-```
-
-### 4. SSL-Modus in Cloudflare prüfen
-
-Unter **SSL/TLS → Overview** sollte der Modus auf **Full** oder
-**Full (strict)** stehen — nicht auf „Flexible". Bei „Flexible" kann es zu
-Weiterleitungsschleifen kommen, sobald im NPM „Force SSL" aktiv ist.
-
-Für die Kombination Tunnel + NPM ohne eigenes Zertifikat im NPM ist es am
-einfachsten, im NPM **Force SSL auszuschalten** und die Verschlüsselung
-komplett Cloudflare zu überlassen. Der Tunnel selbst ist bereits verschlüsselt.
-
-### 5. Testen
-
-```bash
-curl -I https://julian.stengele-home.de
-curl  https://julian.stengele-home.de/healthz     # -> ok
-```
-
----
-
-## Aktualisieren
-
-```bash
-cd ~/docker/julian-portfolio
-git pull
-docker compose up -d --build
-
-# Alte, ungenutzte Images aufräumen
-docker image prune -f
-```
-
-Da `index.html` mit `no-cache` ausgeliefert wird und alle Assets einen
-Inhalts-Hash im Dateinamen tragen, sehen Besucher die neue Version sofort —
-ohne dass jemand den Browser-Cache leeren muss.
-
-Läuft die Seite hinter Cloudflare, kann zusätzlich ein **Purge Cache** im
-Cloudflare-Dashboard sinnvoll sein, falls du dort Caching-Regeln aktiviert hast.
-
----
-
 ## Projektstruktur
 
 ```
 .
-├── DEPLOYMENT.md            Schritt-für-Schritt-Anleitung zum Onlinestellen
+├── DEPLOYMENT.md            kurze Befehlsfolge für das Deployment
 ├── Dockerfile               zweistufiger Build: Node -> nginx:alpine
 ├── docker-compose.yml       Betrieb auf dem Homeserver
 ├── nginx.conf               Auslieferung, Caching, Kompression
@@ -503,12 +203,13 @@ Cloudflare-Dashboard sinnvoll sein, falls du dort Caching-Regeln aktiviert hast.
 │   └── prerender.mjs        rendert die Seite beim Bauen zu HTML
 ├── public/
 │   ├── favicon.svg          Monogramm als Favicon
+│   ├── apple-touch-icon.png Icon für iPhone und iPad (180x180)
 │   ├── og-image.png         Vorschaubild für Link-Vorschauen (1200x630)
 │   ├── og-image.svg         Quelle des Vorschaubilds
 │   ├── robots.txt
 │   └── sitemap.xml
 └── src/
-    ├── main.jsx             Einstiegspunkt im Browser (hydrateRoot)
+    ├── main.jsx             Einstiegspunkt im Browser (createRoot/hydrateRoot)
     ├── entry-server.jsx     Einstiegspunkt für das Prerendering
     ├── mail.js              verfremdete Adresse und Sicherheitsabfrage
     ├── App.jsx              Verteiler auf Startseite, Datenschutz und 404
@@ -525,7 +226,8 @@ Cloudflare-Dashboard sinnvoll sein, falls du dort Caching-Regeln aktiviert hast.
     └── components/
         ├── Nav.jsx          Kopfzeile mit mobilem Menü
         ├── Hero.jsx         Einstiegsbereich
-        ├── Monogram.jsx     Avatar mit rotierendem Ring
+        ├── Monogram.jsx     interaktiver Systemkern im Einstiegsbereich
+        ├── CommandPalette.jsx  Schnellnavigation über Strg + K
         ├── Backdrop.jsx     Hintergrund-Verläufe und Raster
         ├── Projects.jsx     Projektkarten mit Aufklapp-Details
         ├── Github.jsx       Live-Zahlen, Sprachen und Aktivität
@@ -543,9 +245,6 @@ Cloudflare-Dashboard sinnvoll sein, falls du dort Caching-Regeln aktiviert hast.
 ---
 
 ## Entscheidungen im Detail
-
-Ein paar Punkte, die beim späteren Anfassen der Konfiguration leicht Ärger
-machen — deshalb hier festgehalten:
 
 **Sicherheits-Header liegen in einer eigenen Datei.**
 In nginx ersetzt ein `add_header` innerhalb eines `location`-Blocks *alle*
@@ -576,10 +275,6 @@ unangemeldet aus dem Browser der Besucher. Ein 403 der GitHub-API wird dabei
 als erschöpftes Kontingent gewertet: Der Header `x-ratelimit-remaining` ist
 über CORS nicht immer lesbar, und ein 403 auf diesen öffentlichen Endpunkten
 hat praktisch keine andere Ursache.
-
-**Kein HSTS aus dem Container.**
-Der Container spricht ausschließlich HTTP. HSTS gehört an die Stelle, an der
-TLS endet — also in den NPM oder zu Cloudflare.
 
 ---
 

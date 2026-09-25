@@ -8,6 +8,7 @@ import Skills from './components/Skills'
 import Timeline from './components/Timeline'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
+import CommandPalette from './components/CommandPalette'
 import Datenschutz from './pages/Datenschutz'
 import NichtGefunden from './pages/NichtGefunden'
 
@@ -16,6 +17,7 @@ function Startseite() {
     <>
       <Backdrop />
       <Nav />
+      <CommandPalette />
       <main>
         <Hero />
         <Projects />

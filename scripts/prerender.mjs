@@ -34,6 +34,7 @@ const SEITEN = [
     beschreibung:
       'Wie diese Seite mit Daten umgeht: keine Cookies, kein Tracking, keine eingebundenen Inhalte von Dritten.',
     canonical: 'https://julian.stengele-home.de/datenschutz/',
+    indexieren: false,
     mindestzeichen: 2000,
   },
   {
@@ -42,6 +43,7 @@ const SEITEN = [
     titel: 'Seite nicht gefunden — Julian Stengele',
     beschreibung: 'Diese Adresse gibt es auf julian.stengele-home.de nicht.',
     indexieren: false,
+    canonicalEntfernen: true,
     mindestzeichen: 300,
   },
 ]
@@ -71,20 +73,36 @@ for (const seite of SEITEN) {
   }
 
   if (seite.beschreibung) {
-    dokument = dokument.replace(
-      /(<meta\s*\n?\s*name="description"\s*\n?\s*content=")[^"]*(")/s,
-      `$1${seite.beschreibung}$2`,
-    )
+    dokument = dokument
+      .replace(
+        /(<meta\s*\n?\s*name="description"\s*\n?\s*content=")[^"]*(")/s,
+        `$1${seite.beschreibung}$2`,
+      )
+      .replace(
+        /(<meta\s*\n?\s*property="og:description"\s*\n?\s*content=")[^"]*(")/s,
+        `$1${seite.beschreibung}$2`,
+      )
   }
 
   if (seite.canonical) {
-    dokument = dokument.replace(
-      /(<link rel="canonical" href=")[^"]*(")/,
-      `$1${seite.canonical}$2`,
-    )
+    dokument = dokument
+      .replace(
+        /(<link rel="canonical" href=")[^"]*(")/,
+        `$1${seite.canonical}$2`,
+      )
+      .replace(
+        /(<meta property="og:url" content=")[^"]*(")/,
+        `$1${seite.canonical}$2`,
+      )
   }
 
-  // Eine Fehlerseite gehört nicht in den Suchindex.
+  if (seite.canonicalEntfernen) {
+    dokument = dokument
+      .replace(/\s*<link rel="canonical" href="[^"]*" \/>/, '')
+      .replace(/\s*<meta property="og:url" content="[^"]*" \/>/, '')
+  }
+
+  // Fehler- und Funktionsseiten gehören nicht in den Suchindex.
   if (seite.indexieren === false) {
     dokument = dokument.replace(
       /(<meta name="robots" content=")[^"]*(")/,

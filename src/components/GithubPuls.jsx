@@ -28,7 +28,7 @@ export default function GithubPuls() {
       href={`https://github.com/${GITHUB_USER}`}
       target="_blank"
       rel="noreferrer noopener"
-      className="group mb-6 inline-flex items-center gap-2.5 rounded-full border border-ink-700 bg-ink-850/60 px-3.5 py-1.5 font-mono text-xs tracking-wide text-mist-400 backdrop-blur-sm transition-colors duration-200 hover:border-beam-400/40 hover:text-mist-200"
+      className="group mb-6 inline-flex max-w-full min-w-0 items-center gap-2.5 rounded-full border border-ink-700 bg-ink-850/60 px-3.5 py-1.5 font-mono text-xs tracking-wide text-mist-400 backdrop-blur-sm transition-colors duration-200 hover:border-beam-400/40 hover:text-mist-200"
     >
       <span className="relative flex size-1.5">
         <span className="absolute inline-flex size-full animate-ping rounded-full bg-beam-400 opacity-70" />
@@ -36,7 +36,7 @@ export default function GithubPuls() {
       </span>
 
       <GithubIcon size={12} className="text-mist-500 transition-colors group-hover:text-beam-300" />
-      Zuletzt aktiv auf GitHub · {wann}
+      <span className="truncate">Zuletzt aktiv auf GitHub · {wann}</span>
     </a>
   )
 }

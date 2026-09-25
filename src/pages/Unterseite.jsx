@@ -12,9 +12,12 @@ export default function Unterseite({ titel, kicker, children }) {
       <header className="border-b border-ink-800/80">
         <div className="mx-auto flex h-18 max-w-3xl items-center px-6 sm:px-8">
           <a href="/" className="group flex items-center gap-2.5" aria-label="Zur Startseite">
-            <span className="grid size-8 place-items-center rounded-lg bg-linear-135 from-beam-400 to-pulse-500 font-mono text-xs font-bold text-ink-950">
-              {person.initials}
-            </span>
+            <img
+              src="/favicon.svg?v=6"
+              alt=""
+              aria-hidden="true"
+              className="size-8 rounded-lg"
+            />
             <span className="font-semibold tracking-tight text-mist-100">{person.name}</span>
           </a>
         </div>
