@@ -280,5 +280,14 @@ hat praktisch keine andere Ursache.
 
 ## Lizenz
 
-Der Quellcode steht unter der MIT-Lizenz, siehe [`LICENSE`](LICENSE).
-Inhalte, Texte und das Monogramm sind davon ausgenommen.
+Der technische Quellcode dieser Website (einschließlich Komponenten, Styles und
+Konfiguration) steht unter der [MIT-Lizenz](LICENSE).
+
+Die MIT-Lizenz gilt nicht für persönliche Angaben, redaktionelle Texte und
+Projektbeschreibungen – auch wenn sie in Quelldateien wie `src/data/profile.js`
+oder `index.html` stehen. Ebenfalls ausgenommen sind das Monogramm und die
+eigenen Grafiken in `public/`, insbesondere `favicon.svg`,
+`apple-touch-icon.png`, `og-image.svg` und `og-image.png`. Für diese Texte und
+Gestaltungselemente bleiben alle Rechte vorbehalten. Eingebundene Bibliotheken,
+Schriften und fremde Markenzeichen unterliegen ihren jeweiligen Rechten und
+Lizenzen.
