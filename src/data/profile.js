@@ -15,6 +15,8 @@ export const person = {
   course: 'TIK24',
   university: 'DHBW Friedrichshafen',
   focus: 'Künstliche Intelligenz',
+  plz: '88605',
+  ort: 'Meßkirch',
 }
 
 // ---------------------------------------------------------------------------

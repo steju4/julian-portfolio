@@ -10,6 +10,7 @@ import Contact from './components/Contact'
 import Footer from './components/Footer'
 import CommandPalette from './components/CommandPalette'
 import Datenschutz from './pages/Datenschutz'
+import Impressum from './pages/Impressum'
 import NichtGefunden from './pages/NichtGefunden'
 
 function Startseite() {
@@ -42,6 +43,7 @@ function Startseite() {
  * kämen dann zu unterschiedlichen Ergebnissen und die Hydration bräche.
  */
 export default function App({ seite = 'start' }) {
+  if (seite === 'impressum') return <Impressum />
   if (seite === 'datenschutz') return <Datenschutz />
   if (seite === '404') return <NichtGefunden />
   return <Startseite />

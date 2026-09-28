@@ -10,9 +10,16 @@ import './index.css'
 // scripts/prerender.mjs). Der Browser übernimmt dieses HTML und hängt sich
 // nur noch daran — statt alles zu verwerfen und neu aufzubauen.
 const wurzel = document.getElementById('root')
+// Im Entwicklungsserver fehlt data-seite, weil dort noch kein HTML vorgerendert
+// wurde. Unterseiten trotzdem anhand des Pfads öffnen; im Produktions-Build
+// bleibt die Kennung aus dem HTML maßgeblich für die Hydration.
+const entwicklungsSeite = {
+  '/impressum/': 'impressum',
+  '/datenschutz/': 'datenschutz',
+}[`${window.location.pathname.replace(/\/$/, '')}/`] || 'start'
 const app = (
   <StrictMode>
-    <App seite={wurzel.dataset.seite || 'start'} />
+    <App seite={wurzel.dataset.seite || entwicklungsSeite} />
   </StrictMode>
 )
 

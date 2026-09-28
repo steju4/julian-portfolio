@@ -93,7 +93,7 @@ im ausgelieferten Dokument. Im Browser übernimmt React dieses HTML per
 Die `robots.txt` erlaubt normale Suchmaschinen und Suchassistenten. Crawler,
 die Inhalte ausschließlich zum Trainieren von Modellen sammeln, sind dort
 explizit gesperrt. In der `sitemap.xml` steht nur die Startseite; der
-Datenschutzhinweis bleibt erreichbar, trägt aber `noindex`.
+Datenschutzhinweis und Impressum bleiben erreichbar, tragen aber `noindex`.
 
 Prüfen lässt sich das ohne Browser:
 
@@ -104,11 +104,12 @@ curl -s https://julian.stengele-home.de | grep -c "<h2"
 
 ### Mehr als eine Seite
 
-Neben der Startseite entstehen beim Bauen zwei weitere Dokumente:
+Neben der Startseite entstehen beim Bauen drei weitere Dokumente:
 
 | Adresse | Datei | Zweck |
 | --- | --- | --- |
 | `/` | `dist/index.html` | Startseite |
+| `/impressum/` | `dist/impressum/index.html` | Anbieterangaben |
 | `/datenschutz/` | `dist/datenschutz/index.html` | Datenschutzhinweis |
 | beliebig unbekannt | `dist/404.html` | Fehlerseite, ausgeliefert mit echtem Status 404 |
 
@@ -149,7 +150,7 @@ Hydration-Fehler in der Konsole.
 Der Text unter [`src/pages/Datenschutz.jsx`](src/pages/Datenschutz.jsx)
 beschreibt genau das, was die Seite technisch tut.
 
-Ein Impressum ist bewusst nicht enthalten.
+Das Impressum unter `/impressum/` enthält die Angaben, die das Telemediengesetz (§5 TMG) verlangt.
 
 ---
 
@@ -212,8 +213,9 @@ connect-src 'self' https://api.github.com;
     ├── main.jsx             Einstiegspunkt im Browser (createRoot/hydrateRoot)
     ├── entry-server.jsx     Einstiegspunkt für das Prerendering
     ├── mail.js              verfremdete Adresse und Sicherheitsabfrage
-    ├── App.jsx              Verteiler auf Startseite, Datenschutz und 404
+    ├── App.jsx              Verteiler auf Startseite, Impressum, Datenschutz und 404
     ├── pages/
+    │   ├── Impressum.jsx    Anbieterangaben
     │   ├── Datenschutz.jsx  Datenschutzhinweis
     │   ├── NichtGefunden.jsx  Fehlerseite
     │   ├── Unterseite.jsx   Gerüst für Unterseiten

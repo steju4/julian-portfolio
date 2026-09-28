@@ -28,6 +28,15 @@ const SEITEN = [
     mindestzeichen: 5000,
   },
   {
+    schluessel: 'impressum',
+    datei: 'dist/impressum/index.html',
+    titel: 'Impressum — Julian Stengele',
+    beschreibung: 'Angaben zum Anbieter der Portfolio-Website von Julian Stengele.',
+    canonical: 'https://julian.stengele-home.de/impressum/',
+    indexieren: false,
+    mindestzeichen: 150,
+  },
+  {
     schluessel: 'datenschutz',
     datei: 'dist/datenschutz/index.html',
     titel: 'Datenschutz — Julian Stengele',

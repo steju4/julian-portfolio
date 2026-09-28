@@ -16,7 +16,13 @@ export default function Footer() {
           <p className="mt-1.5 font-mono text-[11px] text-mist-500/70">
             Gebaut mit React &amp; Tailwind · selbst gehostet auf dem eigenen Homeserver
           </p>
-          <p className="mt-2.5">
+          <p className="mt-2.5 flex items-center justify-center gap-4 sm:justify-start">
+            <a
+              href="/impressum/"
+              className="font-mono text-[11px] text-mist-500 underline-offset-4 transition-colors hover:text-beam-300 hover:underline"
+            >
+              Impressum
+            </a>
             <a
               href="/datenschutz/"
               className="font-mono text-[11px] text-mist-500 underline-offset-4 transition-colors hover:text-beam-300 hover:underline"
