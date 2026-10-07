@@ -41,7 +41,7 @@ const SEITEN = [
     datei: 'dist/datenschutz/index.html',
     titel: 'Datenschutz — Julian Stengele',
     beschreibung:
-      'Wie diese Seite mit Daten umgeht: keine Cookies, kein Tracking, keine eingebundenen Inhalte von Dritten.',
+      'Wie diese Seite mit Daten umgeht: keine Cookies, Besucherstatistik mit Cloudflare Web Analytics und öffentliche GitHub-Daten.',
     canonical: 'https://julian.stengele-home.de/datenschutz/',
     indexieren: false,
     mindestzeichen: 2000,

@@ -3,7 +3,7 @@
 Persönliche Portfolio-Website von **Julian Stengele** — dualer Informatik-Student
 an der DHBW Friedrichshafen (Kurs TIK24, Schwerpunkt Künstliche Intelligenz).
 
-Single-Page-Site, rein statisch, ohne Backend und ohne Tracking. Gebaut als
+Single-Page-Site, rein statisch, ohne Backend und mit Cloudflare Web Analytics. Gebaut als
 React-Anwendung und ausgeliefert aus einem schlanken `nginx:alpine`-Container
 auf dem eigenen Homeserver.
 
@@ -32,10 +32,15 @@ auf dem eigenen Homeserver.
 | Schriften    | Inter & JetBrains Mono, **lokal gebündelt**          |
 | Auslieferung | nginx:alpine im Docker-Container                     |
 
-Schriften und statische Inhalte kommen vollständig vom eigenen Server. Es gibt
-keine Google Fonts, kein CDN und kein Analytics. Die einzige externe Verbindung
-ist der Abruf öffentlicher Profildaten von der GitHub-API. Das hält die Seite
-datenschutzfreundlich und erlaubt eine strenge Content-Security-Policy.
+Schriften und statische Inhalte kommen vom eigenen Server. Externe Verbindungen
+werden für öffentliche Profildaten aus der GitHub-API und für Cloudflare Web
+Analytics genutzt. Die Content-Security-Policy erlaubt dafür gezielt das
+Beacon-Skript und den Analyse-Endpunkt. Der Beacon mit dem Website-Token steht
+in `index.html` und wird in alle vorgerenderten Seiten übernommen.
+
+In Cloudflare Web Analytics muss die Website für die manuelle Installation
+(„Enable with JS Snippet installation“) eingerichtet sein, damit das Skript
+nicht zusätzlich automatisch eingebunden wird.
 
 ---
 

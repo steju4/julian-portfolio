@@ -141,7 +141,7 @@ export const projects = [
     details: [
       'React mit Vite und Tailwind, zweistufiges Docker-Image mit nginx als Laufzeit. Von außen erreichbar über Nginx Proxy Manager und Cloudflare Tunnel.',
       'Die GitHub-Zahlen weiter oben werden live aus der öffentlichen API geladen, nicht von Hand gepflegt.',
-      'Schriften und statische Inhalte werden selbst gehostet. Nur die GitHub-Zahlen werden über die öffentliche GitHub-API geladen; Tracking wird nicht eingesetzt.',
+      'Schriften und statische Inhalte werden selbst gehostet. GitHub-Zahlen kommen aus der öffentlichen GitHub-API; Cloudflare Web Analytics erfasst Seitenaufrufe und Ladezeiten ohne Cookies.',
       'Entstanden in Zusammenarbeit mit Claude Code.',
     ],
     tech: ['React', 'Vite', 'Tailwind CSS', 'Docker', 'nginx', 'Cloudflare Tunnel'],

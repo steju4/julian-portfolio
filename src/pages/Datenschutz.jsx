@@ -14,9 +14,9 @@ export default function Datenschutz() {
   return (
     <Unterseite kicker="Datenschutz" titel="Wie diese Seite mit Daten umgeht">
       <p className="text-lg leading-relaxed text-mist-300">
-        Kurz gefasst: Diese Seite setzt keine Cookies, bindet keine Werbung ein und misst
-        keine Besucherzahlen. Personenbezogene Daten fallen nur dort an, wo sie technisch
-        unvermeidbar sind — und genau das steht hier.
+        Kurz gefasst: Diese Seite setzt keine Cookies und bindet keine Werbung ein.
+        Cloudflare Web Analytics erfasst Seitenaufrufe und Ladezeiten. Welche Daten bei
+        der Nutzung der Seite verarbeitet werden, steht hier.
       </p>
 
       <Abschnitt titel="Verantwortlich">
@@ -82,6 +82,31 @@ export default function Datenschutz() {
         </p>
       </Abschnitt>
 
+      <Abschnitt titel="Cloudflare Web Analytics">
+        <p>
+          Zur Auswertung von Seitenaufrufen und Ladezeiten verwendet diese Seite
+          Cloudflare Web Analytics. Dafür lädt der Browser ein Skript von
+          static.cloudflareinsights.com und übermittelt Messwerte an Cloudflare.
+          Dabei wird technisch bedingt auch die IP-Adresse an Cloudflare übertragen.
+        </p>
+        <p>
+          Laut Cloudflare verwendet Web Analytics keine Cookies, keinen lokalen
+          Browserspeicher und kein Fingerprinting zur Wiedererkennung von Personen.
+          Ausgewertet werden unter anderem aufgerufene Seiten, verweisende Seiten sowie
+          Angaben zu Browser, Gerät und Ladezeiten.
+          Weitere Informationen stehen in der{' '}
+          <a
+            href="https://developers.cloudflare.com/web-analytics/"
+            target="_blank"
+            rel="noreferrer noopener"
+            className="text-beam-300 underline-offset-4 hover:underline"
+          >
+            Dokumentation von Cloudflare Web Analytics
+          </a>
+          .
+        </p>
+      </Abschnitt>
+
       <Abschnitt titel="Abfrage der GitHub-Daten">
         <p>
           Der Abschnitt „GitHub" auf der Startseite zeigt aktuelle Zahlen zu meinen
@@ -134,10 +159,9 @@ export default function Datenschutz() {
       <Abschnitt titel="Was diese Seite nicht tut">
         <Liste
           punkte={[
-            'Keine Besucherstatistik, keine Reichweitenmessung, kein Tracking.',
             'Keine Cookies, die eine Einwilligung erfordern würden — deshalb gibt es hier auch kein Zustimmungsbanner.',
             'Keine Werbung und keine Weitergabe von Daten zu Werbezwecken.',
-            'Keine eingebundenen Schriften, Karten, Videos oder Skripte von Dritten. Schriftarten liegen auf dem eigenen Server.',
+            'Keine eingebundenen Schriften, Karten oder Videos von Dritten. Schriftarten liegen auf dem eigenen Server.',
             'Kein Kontaktformular, über das Eingaben übertragen würden.',
           ]}
         />
@@ -173,7 +197,7 @@ export default function Datenschutz() {
       <Abschnitt titel="Änderungen">
         <p>
           Ändert sich etwas an der Seite, das die Verarbeitung von Daten betrifft, wird
-          dieser Text entsprechend angepasst. Stand: September 2026.
+          dieser Text entsprechend angepasst. Stand: Oktober 2026.
         </p>
       </Abschnitt>
     </Unterseite>
